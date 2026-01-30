@@ -1,13 +1,9 @@
 <?php
-// incl_functions_1.php used in wbs project 
+// incl_metro_functions_1.php used in wbs project 
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
-// WIG_chk_needed_files("jquery-3.7.1.min.js metro_5_1.css metro_5_1.js animate.css toastr.css toastr.js sweetalert.min.js");
-// WIG_chk_needed_files();
 WIG_reset_global_vars();
 // functions start here 
-
-
 
 
 
@@ -23,8 +19,8 @@ function WIG_reset_global_vars()
  
  
 // set defaultvalues :WAR_metro is used as default array on most of the functions any change has a big impact so be carefully 
-$GLOBALS["WAR_metro"]=["data-role" => "container","class" => "bg-light-green fg-blue","left"=>"5px","top"=> "25px","width"=>"90%","height"=>"600px",
-"position"=>"absolute","delay" => "2000","animation" =>"slideInLeft","my_option" => "none","my_pos"=>"none","my_function"=>"none","my_help"=>"none",
+$GLOBALS["WAR_metro"]=["data-role" => "container","class" => "bg-light-green fg-blue","left"=>"5px","top"=> "25px","width"=>"95%","height"=>"600px",
+"position"=>"absolute","delay" => "500","animation" =>"slideInLeft","my_option" => "none","my_pos"=>"none","my_function"=>"none","my_help"=>"none","visibility" =>"visible",
 "cmd" => "none" ,"caption" => "none" ,"txt" => "none","type"=>"info","font-size" => "16px","txt"=>"none","DEBUG" => "OFF","overflow"=>"scroll","pos" => "none",
 "my_close_btn"=>"YES","id"=>"none","border"=> "5px solid blue","border-radius"=> "10px","refresh"=>"NO","style"=>"YES","close_btn"=>"YES","z-index"=>"9999"];
  
@@ -36,7 +32,7 @@ $my_array=get_defined_functions();
 	}
  
  // below are the arrays that need an customized array 
- $GLOBALS["WAR_btn"]=[ "delay" => "999","txt" => "none","pos" => "top","DEBUG"=>"OFF",
+ $GLOBALS["WAR_btn"]=[ "delay" => "500","txt" => "none","pos" => "top","DEBUG"=>"OFF",
 "cmd" => "none" ,"caption" => "none" , "exec"=>"empty","2exec"=>"empty","border-radius"=> "15px","border-width" => "2px"," border-color" => "blue","close_btn"=>"YES",
 "type"=>"info","font-size" => "20px","mode"=>"horizontal","txt"=>"none","refresh" => "YES","style" => "YES","class=button fg-black bg-light-green"];
  
@@ -50,8 +46,6 @@ $GLOBALS["WAR_iframe"]=["color" => " #000000" , "background-color" => "#E6FFE6",
   "z-index" => "10001" , "txt" => "none" ,"my_option" => "info" , "delay" => "999","exec"=>"empty","overflow"=>"scroll",
  "2exec"=>"empty","position"=> "absolute", "width"=> "95%","height"=> "550px","top"=> "5px","left"=> "5px","border-radius"=> "25px"];	
  
- 
- 
 // create global arrays where we need special variables 
 $GLOBALS["WAR_tail"]=["filename" => "none" ,"fetch" => "?WIG_dt","color" => " blue !important" , "background-color" => "lightgreen !important",
 "txt" => "none" ,"my_option" => "info" , "delay" => "10000","exec"=>"empty","overflow"=>"scroll", "width"=> "95%","height"=> "500px"];
@@ -59,45 +53,11 @@ $GLOBALS["WAR_tail"]=["filename" => "none" ,"fetch" => "?WIG_dt","color" => " bl
 $GLOBALS["WAR_popupwnd"]=["url" => "index.html" ,"target" => "_blank" , "toolbar" => "no", 
 "scrollbars"=> "yes","resizable"=>"yes","status"=> "0", "width"=> "1200","height"=> "550","top"=> "150","left"=> "150"];
 
+$GLOBALS["WAR_dropdown"]=[ "delay" => "999","txt" => "none","pos" => "none","DEBUG"=>"OFF","cmd" => "none" ,"caption" => "none" ,"border-radius"=> "15px",
+"border-width" => "1px"," border-color" => "blue","w_dropdown"=>"WIG_msg|||txt=msg|||delay=2000 WIG_debug WIG_dt","type"=>"info","font-size" => "20px","txt"=>"none","class=fg-black bg-light-green"];
+
 // do not remove this as it is used inside WIG_GET and WIG_PUT
 $GLOBALS["WAR_exec"]=$GLOBALS["WAR_metro"];
-
-
-// add or replace records to the global WAR_ arrays certainly for the z-index & delay & colors etc .. etc ... etc 
-// $zindex="9999";
-// $GLOBALS["W_zindex"]=$zindex;
-
-
-foreach ($GLOBALS as $key => $value)
-   {  
-    // echo "<br> WIG_reset_ : $key ";
-	if (gettype($value) == "array" && preg_match('/^WAR_/',$key) == 1 )
-     // {$GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("delay"=>"999"),array("close_btn"=>"YES"),array("style"=>"YES"),array("DEBUG"=> "OFF"));} 
-
-	if (gettype($value) == "array" && preg_match('/WAR_/', $key) == 1 && preg_match('/WAR_btn/', $key) == 0 )	
-	{
-     // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("z-index"=>"$zindex"));// $zindex++;	 
-     // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("my_pos"=>"none"));	
-     // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("my_option"=>"none"));	 
-	 // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("my_function"=>"none"));	 
-	 // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("color"=>"white !important"),array("background-color" => "lightgreen !important")); 
-	 // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("width"=> "90%"),array("height"=> "500px"),array("DEBUG"=> "OFF"));	
-	  
-	 // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("txt"=> "empty"),array("data-width"=> "45%"),array("data-height"=> "40%"),array("type"=> "info"));
-	 // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("top"=> "25px"),array("left"=> "25px"),array("txt_tablename"=> "test.dat"));
-	 $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("animation"=> "slideInLeft"),array("delay"=>"500"),array("visibility"=>"visible"));
-	 // $GLOBALS["$key"]=array_replace($GLOBALS["$key"],array("border"=> "5px solid blue"),array("border-radius"=> "10px"),array("id"=> "none"));
-	}
-   } 
-//$zindex++;
-// $GLOBALS["W_zindex"]=$zindex;
-// WIG_save_session_vars();
-// $GLOBALS["WAR_menu"]=[ "z-index"=>"$zindex","class" => "primary" , "my_option" => "h-menu","delay" => "999","cmd" => "none" ,"animation"=> "slideInLeft",
-// "txt_tablename"=> "test.dat","caption" => "none" ,"font-size" => "20px","txt"=> "empty"];   
-//$zindex++;
-// $GLOBALS["WAR_notify"]=[ "z-index"=>"$zindex"];
-
-
 
 }
 
@@ -116,65 +76,103 @@ $caption=$GLOBALS["$my_function"]["caption"];$class=$GLOBALS["$my_function"]["cl
 if ( preg_match('/^none/', $GLOBALS["$my_function"]["my_option"]) == 0  )
 {$_SESSION["W_demo"]=$GLOBALS["$my_function"]["my_option"];WIG_save_session_vars();}
 
-	
-
-
+echo "<pre>";
 WIG_dropdown("caption=select :","class=bg-blue fg-red","w_dropdown=
-WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=functions 
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=modify 
 WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=dropdown 
 WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=jav_p 
 WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=menu 
-WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=modify"); 
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=all 
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=user 
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=functions"); 
+
+WIG_dropdown("caption=select 2:","class=bg-white fg-green","w_dropdown=
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=help 
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=examples 
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=user");
+
+WIG_dropdown("caption=select 3:","class=bg-white fg-blue","w_dropdown=
+WIG_container|||visibility=hidden|%|exec=WIG_demo|||my_option=all");
+echo "</pre>";
 
 if(!isset($_SESSION["W_demo"] ) || empty($_SESSION["W_demo"]) ){$_SESSION["W_demo"] = "none";}
 // WIG_dropdown("caption=functions : ","w_dropdown=$my_dropdown");
-
-switch( $_SESSION["W_demo"] )
-{
-	case 1 == preg_match('/modify/',$_SESSION["W_demo"]):
+echo "option : " . $_SESSION["W_demo"];
+// preg_match('(^WIG_|^JAV_)'
+ if( preg_match('(modify|all)',$_SESSION["W_demo"]) == 1 ){
 	WIG_btn("caption=modify events","cmd=WIG_container_events|||my_option=show");WIG_btn("caption=modify hotkey","cmd=WIG_hotkey|||my_option=show");
-    WIG_btn("caption=modify cron","cmd=WIG_cron|||my_option=show");
+    WIG_btn("caption=modify cron","cmd=WIG_cron|||my_option=show");WIG_btn("caption=modify style","cmd=WIG_change_style_from_txt_db|||my_option=show");
+	WIG_btn("caption=modify carousel","cmd=WIG_carousel|||my_option=show");WIG_btn("caption=modify user login","cmd=WIG_login|||my_option=show");
 	WIG_btn("caption=modify session var","cmd=WIG_container|||class=bg-light-blue fg-green|||exec=WIG_change_session_var","class=g-light-blue fg-green");
     WIG_btn("caption=modify global var","cmd=WIG_container|||WIG_change_global_var");
-    WIG_btn("caption=modify global  w_top","cmd=WIG_container|%|WIG_change_global_var|||W_top");
     WIG_btn("caption=modify session w_toast","cmd=WIG_container|%|WIG_change_session_var|||W_toast_txt");
-    WIG_btn("caption=modify style","cmd=WIG_change_style_from_txt_db|||my_option=show");
-    WIG_btn("caption=edit wizard","cmd=WIG_wizard|||my_option=show");
-	WIG_dropdown();
-	 break;
-	case 1 == preg_match('/dropdown/',$_SESSION["W_demo"]):
-	 WIG_dropdown();
-	 WIG_help("my_help=WIG_dropdown");
-	 WIG_help("my_help=WIG_container");
-	 break;
-	case 1 == preg_match('/menu/',$_SESSION["W_demo"]):
-	  WIG_btn("caption=horizontal menu","cmd=WIG_container|%|cmd=WIG_menu|||txt_tablename=test1.dat|||my_option=h-menu");
-	  WIG_menu("txt_tablename=test1.dat","my_option=h-menu","class=bg-blue fg-red");
-	  WIG_btn("caption=sidebar menu","cmd=WIG_menu|||txt_tablename=sidebar_menu.dat|||class=fg-green bg-light-blue|||my_option=sidebar");
-	  WIG_menu("txt_tablename=sidebar_menu.dat","class=fg-green bg-light-blue","my_option=sidebar");
-      WIG_btn("caption=dropdown menu","cmd=WIG_menu|||txt_tablename=dropdown_menu.dat|||class=bg-light-blue fg-green|||my_option=dropdown");
-	  WIG_menu("txt_tablename=dropdown_menu.dat","class=bg-light-blue fg-green","my_option=dropdown");
-      WIG_btn("caption=w_dropdown menu","cmd=WIG_menu|||class=bg-light-blue fg-red|||my_option=w_dropdown|%|w_dropdown=WIG_msg|||txt=hello WIG_dt|||option=none","color=red");
-      WIG_btn("caption=d-menu menu","cmd=WIG_menu|||txt_tablename=d_menu.dat|||class=bg-blue fg-white|||my_option=d-menu");
-      WIG_btn("caption=v-menu","cmd=WIG_menu|||txt_tablename=v_menu.dat|||class=bg-yellow fg-red|||my_option=v-menu");
-      WIG_btn("caption=h-menu","cmd=WIG_menu|||txt_tablename=h_menu.dat|||class=info|||my_option=h-menu");
-      WIG_menu("my_option=w_dropdown","w_dropdown=WIG_msg|||txt=hello WIG_container|||txt=lll|||DEBUG=OFF WIG_toastr|||txt=toast");
-	 break;
-	case 1 == preg_match('/jav_p/',$_SESSION["W_demo"]):
-	 WIG_help("my_help=JAV_p");
-	 WIG_btn("caption=test jav_p","cmd=JAV_p|||WIG_container=DEBUG=ON|||cmd=WIG_menu");
-     WIG_btn("caption=test jav_p","cmd=JAV_p|||WIG_container=DEBUG=OFF|||my_option=left|||height=250px|||cmd=WIG_menu|||exec=WIG_fill");
-	 WIG_btn("caption= javp toast","cmd=JAV_p|||WIG_toastr=txt=hello2|||delay=4000");
-	 break;
-	case 1 == preg_match('/user/',$_SESSION["W_demo"]):
-	 WIG_btn("caption=set user to admin","cmd=WIG_set_var|||username|||admin","exec=WIG_reload");
+    WIG_btn("caption=set user to admin","cmd=WIG_set_var|||username|||admin","exec=WIG_reload");
      WIG_btn("caption=set user to tester","cmd=WIG_set_var|||username|||tester","exec=WIG_reload");
      WIG_btn("caption=set user to none","cmd=WIG_set_var|||username|||none","exec=WIG_reload");
-	 WIG_btn("caption=login","cmd=WIG_login");
-     WIG_btn("caption=logout","cmd=WIG_logout");
-	 WIG_menu();
-	 break;
-	case 1 == preg_match('/functions/',$_SESSION["W_demo"]):
+    }
+	
+if (preg_match('(dropdown|all)',$_SESSION["W_demo"]) == 1){
+	WIG_dropdown("class=fg-blue bg-red","caption=dropdown example");
+    WIG_help("my_help=WIG_dropdown");}
+	 
+if ( preg_match('(menu|all)',$_SESSION["W_demo"]) == 1 ){
+	  WIG_btn("caption=horizontal menu","cmd=WIG_container|%|cmd=WIG_menu|||txt_tablename=test1.dat|||my_option=h-menu");
+	  WIG_menu("txt_tablename=test1.dat","my_option=h-menu","class=bg-blue fg-red");
+	  WIG_btn("caption=sidebar menu","class=fg-green bg-light-blue","cmd=WIG_menu|||txt_tablename=sidebar_menu.dat|||class=fg-green bg-light-blue|||my_option=sidebar");
+	  WIG_menu("txt_tablename=sidebar_menu.dat","class=fg-green bg-light-blue","my_option=sidebar");
+      WIG_btn("caption=dropdown menu","cmd=WIG_menu|||txt_tablename=dropdown_menu.dat|||class=bg-blue fg-green|||my_option=dropdown");
+	  WIG_menu("txt_tablename=dropdown_menu.dat","class=bg-light-blue fg-green","my_option=dropdown");
+      WIG_btn("caption=w_dropdown","class=bg-light-blue fg-red","cmd=WIG_menu|||class=bg-light-blue fg-red|||my_option=w_dropdown|%|w_dropdown=WIG_msg|||txt=hello WIG_dt|||option=none","color=red");
+      WIG_menu("class=bg-light-blue fg-red","caption=w_dropdown","my_option=w_dropdown","w_dropdown=WIG_msg|||txt=hello WIG_dt");
+	  WIG_btn("caption=d-menu menu","class=bg-blue fg-white","cmd=WIG_menu|||txt_tablename=d_menu.dat|||class=bg-blue fg-white|||my_option=d-menu");
+	  WIG_menu("caption=d-menu","txt_tablename=d_menu.dat","class=bg-blue fg-white","my_option=d-menu");
+      WIG_btn("caption=v-menu","cmd=WIG_menu|||txt_tablename=v_menu.dat|||class=bg-yellow fg-red|||my_option=v-menu");
+      WIG_menu("caption=v-menu","txt_tablename=v_menu.dat","class=bg-yellow fg-red","my_option=v-menu");}
+	  
+if ( preg_match('(jav_p|all)',$_SESSION["W_demo"])== 1 )
+ {
+  WIG_help("my_help=JAV_p");WIG_btn("caption=test jav_p : container => wig_menu","cmd=JAV_p|||WIG_container=cmd=WIG_menu|||class=fg-lightblue bg-green");
+  WIG_btn("caption=test jav_p :container => wig_menu","cmd=JAV_p|||WIG_container=DEBUG=OFF|||my_option=left|||height=250px|||cmd=WIG_menu|||exec=WIG_fill");
+ }
+	 
+if ( preg_match('(user|all)',$_SESSION["W_demo"]) == 1 )
+ {
+  WIG_btn("caption=set user to admin","cmd=WIG_set_var|||username|||admin","exec=WIG_reload");WIG_btn("caption=set user to tester","cmd=WIG_set_var|||username|||tester","exec=WIG_reload");
+  WIG_btn("caption=set user to none","cmd=WIG_set_var|||username|||none","exec=WIG_reload");
+  WIG_btn("caption=login","cmd=WIG_login");WIG_btn("caption=logout","cmd=WIG_logout");
+ }
+	 
+if ( preg_match('(help|all)',$_SESSION["W_demo"]) == 1 )
+ {
+  WIG_btn("caption=howto.pdf","cmd=WIG_iframe|||iframe=howto.pdf");
+  WIG_btn("caption=help all","cmd=WIG_container|||cmd=WIG_help");  
+  $my_array=get_defined_functions();$my_dropdown="w_dropdown=";$x=1;echo "<br>";
+  foreach ($my_array["user"] as $key => $value)
+       {
+        $new_value=str_replace("wig_","WIG_","$value");
+		// WIG_help|||my_help=WIG_metro
+
+        echo "<a href=\"?WIG_container=|||class=info|||cmd=WIG_help|%|my_help=$new_value\"><button data-tooltip=\"$value\" style=\"width:200px\" class=\"bg-green fg-red\" >$value</button></a>";
+        $x=$x+1;if( $x > 5 ){echo "<br>";$x=1;}
+		}
+  
+ }
+ 
+if ( preg_match('(examples|all)',$_SESSION["W_demo"])== 1 )
+ {
+  WIG_tooltip("ON");
+  WIG_btn("caption=container test","cmd=WIG_container|%|exec=WIG_demo|||visibility=hidden|||z-index=0","refresh=NO");
+  WIG_btn("caption=jav_p dt","cmd=JAV_p|||WIG_window=DEBUG=ON");
+  WIG_btn("caption=jav_show_hide","cmd=JAV_show_hide|||WIG_clock|||slideInLeft|||7s");  
+  WIG_btn("caption=msg ok","cmd=WIG_msg|||WIG_dt|||class=fg-red bg-blue|||my_pos=tr|||delay=5500|||exec=WIG_clock|||DEBUG=ON|%|exec2=WIG_show_hide|||WIG_clock|%|exec3=JAV_show_hide|||WIG_box");  
+  WIG_btn("caption=jav_p","cmd=JAV_p|||WIG_msg=cmd=WIG_dt|||class=fg-red bg-blue|||my_pos=tr|||delay=5000|||exec=WIG_clock|||DEBUG=ON|||exec2=WIG_show_hide|%|WIG_clock");
+  WIG_btn("caption=wig_box","cmd=JAV_show_hide|||WIG_box");
+  WIG_btn("caption=wig_window","cmd=JAV_show|||WIG_window");
+  WIG_btn("caption=wig_box","cmd=WIG_show|||WIG_box");
+  WIG_btn("caption=wig_box 2","cmd=WIG_metro|||width=1200px|||height=600px|||delay=2000|||DEBUG=ON|%|cmd=JAV_show_hide|||WIG_box");
+ }
+ 
+if ( preg_match('(functions|all)',$_SESSION["W_demo"])== 1 ){
 	 $my_array=get_defined_functions();$my_dropdown="w_dropdown=";$x=1;echo "<br>";
       foreach ($my_array["user"] as $key => $value)
        {
@@ -182,25 +180,18 @@ switch( $_SESSION["W_demo"] )
         echo "<a href=\"?$new_value\"><button style=\"width:200px\" class=\"bg-green fg-red\" >$value</button></a>";
         $x=$x+1;if( $x > 5 ){echo "<br>";$x=1;}
 		}
-	 break;	 
-	case 1 == preg_match('/^menu2/',$_SESSION["W_demo"]):
-	 WIG_btn("caption=sidebar menu","cmd=WIG_menu|||txt_tablename=sidebar_menu.dat|||class=fg-green bg-light-blue|||my_option=sidebar");
-     WIG_btn("caption=dropdown menu","cmd=WIG_menu|||txt_tablename=dropdown_menu.dat|||class=bg-light-blue fg-green|||my_option=dropdown");
-     WIG_btn("caption=w_dropdown menu","cmd=WIG_menu|||class=bg-light-blue fg-red|||my_option=w_dropdown|%|w_dropdown=WIG_msg|||txt=hello WIG_dt|||option=none","color=red");
-     WIG_btn("caption=d-menu menu","cmd=WIG_menu|||txt_tablename=d_menu.dat|||class=bg-blue fg-white|||my_option=d-menu");
-     WIG_btn("caption=v-menu","cmd=WIG_menu|||txt_tablename=v_menu.dat|||class=bg-yellow fg-red|||my_option=v-menu");
-     WIG_btn("caption=h-menu","cmd=WIG_menu|||txt_tablename=h_menu.dat|||class=info|||my_option=h-menu");
+} 
+	
+if (preg_match('(msg|all)',$_SESSION["W_demo"]) == 1 ){
+	echo 'WIG_msg("txt=hello br","class=bg-blue fg-white","height=100px","my_pos=br","delay=4000")';
+	WIG_btn("caption=wig_msg tr","cmd=WIG_msg|||txt=hello tr|||class=bg-blue fg-white|||DEBUG=ON|||height=600px|||my_pos=tr|||delay=4000|||z-index=11000","refresh=YES");
+	WIG_btn("caption=wig_msg bl","cmd=WIG_msg|||class=bg-blue fg-white|||position=absolute|||top=10px|||height=100px|||delay=4000");
+	WIG_btn("caption= javp msg","cmd=JAV_p=WIG_msg|||txt=hello");
+	 WIG_btn("caption= javp msg","cmd=JAV_p=WIG_msg|||txt=hello br|||class=bg-blue fg-white|||height=100px|||my_pos=br|||delay=4000");
+	
+	 }
      
-	 break; 
-	 
-	default :
-	 WIG_msg("txt=wrong or no option is given !!!");
-     break;
-}
 
-// WIAG_bs_exec($GLOBALS["$my_function"]);	
-// WIG_msg("DEBUG=ON","class=bg-red fg-white","exec=WIG_dt","my_pos=bl","height=300px","delay=5000");
-//WIG_toast("txt=option : $_SESSION[W_demo]","delay=200","class=bg-blue fg-white","my_pos=bl");
 }
 
 
@@ -439,7 +430,7 @@ function WIG_create()
 {
 WIG_metro("id=WIG_clock","data-role=container","DEBUG=OFF","width=200px","height=100px","class=alert","my_option=create","exec=WIG_jav|||JAV_clock");		
 WIG_metro("id=WIG_window","data-role=window","DEBUG=OFF","width=1200px","height=500px","data-hidden=true","class=window","my_option=create","exec=WIG_debug");			
-WIG_metro("id=WIG_box","data-role=box","DEBUG=OFF","width=600px","height=400px","visibility=hidden","class=box","my_option=create","exec=WIG_metro_clock","exec2=WIG_dt");					
+WIG_metro("id=WIG_box","data-role=box","DEBUG=OFF","width=600px","height=400px","visibility=hidden","class=box","my_option=create","exec=WIG_clock","exec2=WIG_dt");					
 WIG_reset_global_vars();
 }
 
@@ -494,6 +485,7 @@ $seconds=round($my_delay / 1000, 0, PHP_ROUND_HALF_UP);$seconds=$seconds . "s";
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
 echo "<div $my_style id=\"$new_id\" >";
 echo "<br> $my_style";
+echo "<br> id : $new_id <br>";
 WIG_dt();
 WIAG_bs_exec($GLOBALS["$my_function"]);
 echo "</div>";

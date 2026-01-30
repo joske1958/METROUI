@@ -2,9 +2,6 @@
 // incl_metro_functions.php
 // turn off error reporting 
 // error_reporting(0);
-
-
-
 // turn on
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -230,8 +227,6 @@ foreach(explode(" ","$needed_files") as $my_include)
    }
  }
 if ( $error == 1 ){echo "<script>alert('$result');</script>";} 
-
-// if ( count($my_param) > 0 ){WIG_toastr("$result","warning" , "toast-bottom-right" , "500");}
 // WIG_toast("txt=loading needed files " , "my_pos=tr" , "delay=1100");
 }
 
@@ -446,7 +441,7 @@ echo "</div></div>";
 
 }
 
-
+// HELP call the repeated jobs to modify use WIG_cron("my_option=show") or WIG_btn("caption=cron","my_option=show") or ?WIG_cron=my_option=show
 function WIG_cron()
 {
 $my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");	
@@ -509,7 +504,7 @@ $old_txt_tablename=$txt_tablename;
 $txt_tablename=$_SESSION["DATA"] . "/" . $_SESSION["username"] . "_" . $txt_tablename ;
 usleep(100);$time_end=round(microtime(true) * 1000);$my_id="$my_function" . "_" . "$time_end";
 global $txt_db;$txt_db=array();
-
+// unlink($txt_tablename);
 if( !file_exists($txt_tablename))
  {
  $txt_tableinfo="status id number name action active";$txt_num_records=125;
@@ -518,10 +513,10 @@ if( !file_exists($txt_tablename))
  $txt_db=WIG_get_txt_db("$txt_tablename",$txt_db);
  for($record=1;$record<= 30;$record++)
  {$txt_db[0][$record]="Y";$txt_db[2][$record]=(64+$record);$txt_db[3][$record]="ALT_" . chr(64+$record) . " " . (64+$record) ;$txt_db[4][$record]="JAV_show('WIG_clock');";$txt_db[5][$record]="N";}
- $txt_db[4][7]="JAV_show('WIG_modal_2');";$txt_db[5][7]="Y";
- $txt_db[4][1]="JAV_show('WIG_change_color_nm');";$txt_db[5][1]="Y";
- $txt_db[4][3]="JAV_show('WIG_change_color');";$txt_db[5][3]="Y";
- $txt_db[4][9]="JAV_show('WIG_translate');";$txt_db[5][9]="Y";
+ $txt_db[4][7]="JAV_show('WIG_clock');";$txt_db[5][7]="Y";
+ $txt_db[4][1]="JAV_show('WIG_clock');";$txt_db[5][1]="Y";
+ $txt_db[4][3]="JAV_show_hide('WIG_clock');";$txt_db[5][3]="Y";
+ $txt_db[4][9]="JAV_show('WIG_clock');";$txt_db[5][9]="Y";
  WIG_write_txt_db("$txt_tablename",$txt_db);
  }	
 $txt_db=WIG_get_txt_db("$txt_tablename",$txt_db);
@@ -577,7 +572,6 @@ sleep(1);
 <?php
 }
 
-
 // HELP show global var's with echo 
 function WIG_globals()
 {
@@ -593,73 +587,6 @@ echo "$my_txt";
 }
 
 
-// HELP show hide objects with a button found in $_SERVER['SCRIPT_FILENAME'] param= button,group,nav
-function WIG_show_hide_objects($given_option = null)
-{
-if( !isset($given_option) || empty($given_option) ){$given_my_option="button";}
-$my_script=basename($_SERVER['SCRIPT_FILENAME']);
-$result="";		
- $fn = fopen($my_script,"r") or trigger_error("could not read file !! ");
-  while(! feof($fn))
-	  {
-	   $result = fgets($fn);
-
-switch( $result )
-{
-case 1 == preg_match('/div id="WIG/',$result):
- // echo "<br>" . htmlentities($result);
- if ( preg_match('/visibility:/',$result) == 1 )
-  {
-   $result=preg_replace('/<div id="/','', $result);
-   $result=substr($result,0,strpos($result,"\""));
-   if ( $given_option ==  "button" )
-   {
-    WIG_button("JAV_show_hide", "$result");
-    WIG_button("WIG_show_hide", "$result");
-   }
-   if ( $given_option ==  "button" )
-   {
-    WIG_button_group("JAV_show", "$result","JAV_hide", "$result","WIG_show", "$result","WIG_hide", "$result","JAV_show_hide", "$result","WIG_show_hide", "$result");  
-   }
-  if ( $given_option ==  "nav" )
-   {
-    WIG_nav("JAV_show", "$result","JAV_hide", "$result","WIG_show", "$result","WIG_hide", "$result","JAV_show_hide", "$result","WIG_show_hide", "$result");  
-   }
- WIG_button_group("JAV_show", "$result","JAV_hide", "$result","WIG_show", "$result","WIG_hide", "$result","JAV_show_hide", "$result","WIG_show_hide", "$result");
- 
- } 
-break;
-
-case 1 == preg_match('/<form name="/',$result):
-  // echo "<br>    NNN" . htmlentities($result);
-  if ( preg_match('/id="WIG_/',$result) == 1 )
-  {
-   $result=substr($result,strpos($result,"id=\"WIG")+4,strlen($result));
-   // $result=substr($result,strpos($result,"id=")+4,strlen($result));
-   $result=substr($result,0,strpos($result,"\""));
-   if ( $given_option ==  "none" )
-   {
-   WIG_button("JAV_show", "$result");
-   WIG_button("JAV_hide", "$result");
-   WIG_button("JAV_show_hide", "$result");
-   WIG_button("WIG_show_hide", "$result");
-   }
-   else
-	   WIG_button_group("JAV_show", "$result","JAV_hide", "$result","WIG_show", "$result","WIG_hide", "$result","JAV_show_hide", "$result","WIG_show_hide", "$result");  
-  }
-  
-break;
-
-default:
-// echo "$result";
-$result="";
-break;	
-}	
-// end of while loop
-  }
-  fclose($fn);
-echo "<br>"; 
-}
 
 // HELP WIG_fill return text param1 : rows , param 2 : lenght 
 function WIG_fill($fill_rows = null,$fill_size = null,$fill_option = null )
@@ -1350,91 +1277,55 @@ return;
 
 // HELP logincheck check user/pwd + session_id user must be different to guest
 function WIG_login()
-{	
-// below we could check if user exist and could login Y/N 
-$_SESSION["txt_tablename"]="admin_data.dat";
-$txt_tablename=$_SESSION["txt_tablename"];
-
-// no file so create first DB with two users admin and guest 
-if( !file_exists($_SESSION["txt_tablename"]))
 {
-global $txt_db;
-$_SESSION["txt_tableinfo"]="status id name session_id password role logged_in email full_name street town postnumber country tel";
-$txt_tableinfo=$_SESSION["txt_tableinfo"];
-$_SESSION["txt_num_records"]=250;
-$txt_num_records=$_SESSION["txt_num_records"];
-WIG_create_txt_db($txt_tablename,$txt_tableinfo,$txt_num_records);
-$txt_db[0][1]="Y";
-	$txt_db[2][1]="guest";
-	$txt_db[3][1]=$_SESSION["session_id"];
-	$txt_db[4][1]="guest";
-	$txt_db[5][1]="guest";
-	$txt_db[6][1]=date("d/m/y : H:i:s", time());
-$txt_db[0][2]="Y";
-	$txt_db[2][2]="admin";
-	$txt_db[3][2]="none";
-	$txt_db[4][2]="admin";
-	$txt_db[5][2]="admin";
-	$txt_db[6][2]=date("d/m/y : H:i:s", time());
- WIG_write_txt_db($txt_tablename);
-}
-// file is there open it & check user/pwd + session_id 
-if( file_exists($_SESSION["txt_tablename"]) )
+$my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");	
+$GLOBALS["$my_function"]=array_merge($GLOBALS["WAR_metro"],func_get_args());
+$my_style=WIAG_bs($GLOBALS["$my_function"]);
+$old_txt_tablename="data.dat";
+$txt_tablename =$_SESSION["DATA"] . "/" . "admin_data.dat";
+$my_option=$GLOBALS["$my_function"]["my_option"];
+usleep(100);$time_end=round(microtime(true) * 1000);$my_id="$my_function" . "_" . "$time_end";
+$wig_datatable=preg_replace('/.dat|\//','', $txt_tablename);
+$my_txt_tablename=$wig_datatable;
+${$wig_datatable}=$wig_datatable;
+$wig_datatable=array();
+
+// WIG_toastr($my_txt="none" , $my_delay="1500" , $my_color="info" , $my_width="250" )
+// only admin user can change this
+if ( preg_match('(admin)',$_SESSION["username"] ) == 0 ){WIG_toastr("only admin can change this !!!","5000","fg-white bg-red","1200");return;}
+
+if( !file_exists($txt_tablename))
  {
-  global $txt_db;WIG_get_txt_db($txt_tablename);
-  $records_db=count($txt_db[0])-2;
-   for($record=1;$record<=$records_db;$record++) 
-   {	
-    $STATUS=$txt_db[0][$record];
-    $my_user=$txt_db[2][$record];
-	$my_password=$txt_db[4][$record];
-    if ( $STATUS == "Y" && $my_password == $_SESSION["password"] &&  $my_user == $_SESSION["username"] )
-	{
-	$txt_db[3][$record]=session_id();
-	$_SESSION["password"]="DB";
-	$_SESSION["role"]=$txt_db[5][$record];
-	$txt_db[6][$record]=date("d/m/y : H:i:s", time());
-	WIG_write_txt_db($txt_tablename);
-	$my_include=$_SESSION["username"] . "_incl_session_var.php";
-	if ( file_exists($my_include ) ){include($my_include);WIG_toast("txt=WIG_login loading : $my_include");}	
-	$_SESSION["password"]="DB";
-	$_SESSION["role"]=$txt_db[5][$record];
-	WIG_save_session_vars();
-	echo("<script>location.href = 'index.html';</script>");
-	// WIG_reload();
-	return;
-	}
-	
-   }
+ $txt_tableinfo="status id name session_id password role logged_in email full_name street town postnumber country tel";$txt_num_records=31;
+ WIG_create_txt_db($txt_tablename,$txt_tableinfo,$txt_num_records);
+ $wig_datatable=WIG_get_txt_db("$txt_tablename",$wig_datatable );
+ $wig_datatable[0][1]="Y";
+	$wig_datatable[2][1]="guest";
+	$wig_datatable[3][1]=$_SESSION["session_id"];
+	$wig_datatable[4][1]="guest";
+	$wig_datatable[5][1]="guest";
+	$wig_datatable[6][1]=date("d/m/y : H:i:s", time());
+$wig_datatable[0][2]="Y";
+	$wig_datatable[2][2]="admin";
+	$wig_datatable[3][2]="none";
+	$wig_datatable[4][2]="admin";
+	$wig_datatable[5][2]="admin";
+	$wig_datatable[6][2]=date("d/m/y : H:i:s", time());
+  WIG_write_txt_db("$txt_tablename" , $wig_datatable );
+
  }
-// 2- user is guest so you cannot open this page 
-if( file_exists($_SESSION["txt_tablename"]) && $_SESSION["username"]  == "guest" )
-{
-$_SESSION["role"]="guest";
-$_SESSION["password"]="DB";
-// WIG_reload();
-WIG_toast("txt=Welcome  : guest  ");
-echo("<script>location.href = 'index.html';</script>");
-return;
+ $wig_datatable=WIG_get_txt_db("$txt_tablename",$wig_datatable );
+// echo "<br> $my_option old : $old_txt_tablename";
 
-// header( "refresh:5;url=index.html" ); 
-// echo "<button type=button onclick=\"window.close();return false;\" class=\"btn btn-primary\">close</button>"; 
-// exit;
+switch( $my_option )
+  {
+    case 1 == preg_match('/show/',$my_option):
+               WIG_container("cmd=WIG_metro_show_datatables|||txt_tablename=$old_txt_tablename");
+               break;		   
+			   
+  }
 }
 
-// 3- user is unknown so reload page 
-if( file_exists($_SESSION["txt_tablename"]) && $_SESSION["username"]  != "guest" )
-{
-$_SESSION["username"]="guest";
-$_SESSION["role"]="guest";
-$_SESSION["password"]="DB";
-WIG_toast("txt=User or password is wrong !!! using default user : guest ");
-echo("<script>location.href = 'index.html';</script>");
-// WIG_reload();
-return;
-}
-
-}
 
 // HELP save current session var's beginning with W_ so each page resfresh the value is kepted
 function WIG_save_session_vars()
@@ -1502,7 +1393,7 @@ echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_hide
 
 
 // HELP show hide object by id using javascript
-function WIG_show_hide($my_id= null , $my_action="slideleft" , $my_delay="10s" )
+function WIG_show_hide($my_id= null , $my_action="slideInleft" , $my_delay="7s" )
 {
 if( !isset($my_id)){WIG_toast("txt=wig_show_hide => No id is given return without action");return;}
 if ( $my_action == "none" )
@@ -1517,6 +1408,10 @@ if ( $my_action == "none" )
  }
 $my_id="'" . $my_id . "'";$my_delay="'" . $my_delay . "'";
 echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_show_hide($my_id,$my_action,$my_delay); } );</script>";
+// WIG_toast("txt=<br><br>JAV_show_hide($my_id,$my_action,$my_delay)","my_pos=tr","delay=500","width=400px");
+// $to_send="JAV_show_hide($my_id,$my_action,'7s')";
+// WIG_toast("txt=<br><br>$to_send","my_pos=tr","delay=500","width=400px");
+// CORRECT => echo "<script type=\"text/javascript\">JAV_show_hide('WIG_clock','slideInLeft','7s');</script>";  
 }
 
 // HELP show defined functions & var'save
@@ -1796,6 +1691,7 @@ WIG_log("GET : $my_result");
 		  if ( preg_match('/^JAV_p/',$GET_var) == 1 )
 			 {
               $my_args="";$my_click="";$my_click="$GET_var" . "('" . "$GET_value" . "')";
+			  // echo "<br> my_click : $my_click ";
 			  echo "<script type=\"text/javascript\">  $(document).ready(function() { $my_click } );</script>";	
 			 }
 	 // echo "<br> 2 my_click $my_click ";
