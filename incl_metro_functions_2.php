@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 // functions start here
  
-// HELP create dropdown menu call like this WIG_dropdown("caption=drop_test","w_dropdown=WIG_msg|||txt=hello WIG_container|||txt=lll WIG_toastr|||txt=toast");
+// HELP create dropdown menu call like this WIG_dropdown("caption=drop_test","w_dropdown=WIG_msg|||txt=hello WIG_container|||txt=lll%%%WIG_toastr|||txt=toast");
 function WIG_dropdown()
  {
 WIG_reset_global_vars();
@@ -23,8 +23,8 @@ $d_menu_class=str_replace("button","","$class");
    {	   
 	 if ( preg_match('/^w_dropdown/',$key) == 1 )
 	           {  			
-                $my_array=explode(" ","$value");
-                for($i=0; $i <=substr_count( "$value" ," "); $i+=1)
+                $my_array=explode("%%%","$value");
+                for($i=0; $i <=substr_count( "$value" ,"%%%"); $i+=1)
 				 {	
                   // echo "<li> $i . $my_array[$i] </li>";			 
 				 $my_caption=strtolower($my_array[$i]);$my_caption=str_replace("|||",":",$my_array[$i]);$my_cmd=$my_array[$i];
@@ -43,20 +43,7 @@ echo "</div>";
 
 
  // HELP send message JAV_notify(my_text,my_delay,my_color,my_width)
-function WIG_notify_new($my_text="none" , $my_delay=5000 , $my_color="info" , $my_width=250 )
-{
-$my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");	
-$GLOBALS["$my_function"]=array_merge($GLOBALS["WAR_metro"],func_get_args());
-$my_style=WIAG_bs($GLOBALS["$my_function"]);
-$args=implode(func_get_args());
-$cls=$GLOBALS["$my_function"]["class"];
-$timeout=$GLOBALS["$my_function"]["delay"];
-$my_width=250 + rand(10,200);
-// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_notify(); } );</script>";
-// alert,info,succes, primary, .secondary, .success, .alert, .warning, .yellow, .info and .light
-// echo "<br> wig_notify : cls: $my_color , width:$my_width , timeout : $my_delay  , args : $my_text ";
-echo "<script>Metro.notify.create(\"$my_text\",\"\",{cls:\"$my_color\",width:$my_width,duration:1000,timeout:$my_delay});</script>";
-}
+
  
 // HELP  create msg default params are in $GLOBALS["WAR_metro"] use WIG_help("my_help=WIG_msg"); or ?WIG_help=my_help=WIG_msg
 function WIG_msg()
@@ -107,8 +94,8 @@ $my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");
 $GLOBALS["$my_function"]=array_merge($GLOBALS["WAR_metro"],func_get_args());
 $GLOBALS["$my_function"]["delay"]="5000";$GLOBALS["$my_function"]["z-index"]="9999";
 $GLOBALS["$my_function"]["width"]="300px";$GLOBALS["$my_function"]["height"]="100px";
-$GLOBALS["$my_function"]["DEBUG"]="OFF";
-$GLOBALS["$my_function"]["visibility"]="hidden";
+// $GLOBALS["$my_function"]["DEBUG"]="ON";
+// $GLOBALS["$my_function"]["visibility"]="hiddens";
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
 if ( preg_match('/right|tr|br|mid|mr/', $GLOBALS["$my_function"]["my_pos"]) == 1 ){$GLOBALS["$my_function"]["left"]="80%";}
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
@@ -321,17 +308,15 @@ switch( $my_option )
 			  }		  
            }		   
 		  break;  
- }	
-
-}
-
+  }	
+ }
 
 
 
 // HELP create button using GLOBAL variables + cmd line
 function WIG_btn()
 {
-$my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");
+$my_function="WIG_btn";$my_function=str_replace("WIG","WAR","$my_function");
 WIG_reset_global_vars();$GLOBALS["$my_function"]=array_merge($GLOBALS["$my_function"],func_get_args());
 $GLOBALS["$my_function"]["delay"]=500;
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
@@ -347,7 +332,7 @@ if ( preg_match('/^JAV_/',$given_exec) == 1  )
 		  $my_args=$num_args[0] . "('" ;unset($num_args[0]);
 		  if( !isset($num_args[1])){$num_args[1]="none";}
 		  $val_to_check=$num_args[1];		  
-		  //echo "<br>:<br> my_args : $my_args <br> , val_to_check : $val_to_check , <br> given_exec : $given_exec <br>"; 
+		  // echo "<br>:<br> my_args : $my_args <br> , val_to_check : $val_to_check , <br> given_exec : $given_exec <br>"; 
 		  
 		  // JAV_ with no WIG_  or WAR_ so it is JAV_*('arg1','arg2','...');
 		   if ( preg_match('(WIG_|WAR_)',$val_to_check) == 1 || preg_match('/^JAV_/',$given_exec) == 1 )
@@ -359,7 +344,7 @@ if ( preg_match('/^JAV_/',$given_exec) == 1  )
              $my_click="$my_args)";$button_txt="$my_click";
 		    }
 			// JAV_p is called it is JAV_p('.............') => arguments are not changed 
-            if ( preg_match('/^JAV_p/',$given_exec ) == 1 )
+            if ( preg_match('/^JAV_p/',$given_exec ) == 1 && strlen($given_exec) > 5 )
 			 {
               $my_args="";$my_click="";$my_args="JAV_p('" ;$given_exec=str_replace("JAV_p|||","","$given_exec");
 			  $my_click=$my_args . $given_exec . "');";
@@ -369,24 +354,21 @@ if ( preg_match('/^JAV_/',$given_exec) == 1  )
 		   
 		 }
 
-// create FORM based on refresh value 
-if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 1 ){echo "<div><form id=\"$new_id\" >";$class="fg-red bg-blue";} 
+// create FORM based on refresh value action=\"incl_metro_functions.php\" 
+if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 1 ){echo "<div><form id=\"$new_id\" method=\"POST\" >";$class="fg-red bg-blue";} 
 if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 0 ){echo "<div><form id=\"$new_id\" method=\"POST\" >";} 
 foreach ($GLOBALS["$my_function"] as $key => $value){echo "<input hidden type = \"text\" value=\"$value\" name = \"$key\"/>";					}			
 echo "<br><div><button type=\"submit\"  class=\"$class\"  data-tooltip=\"$given_exec\" $my_style >$given_caption</button></div>";
 echo "</div></form>";
-echo "<div id=\"jav_form_response\" style=\"top:0px;left:0px;width:100%;position:fixed;\"></div>";
-//echo "<div id=\"jav_form_response\" class=\"container-max\">DD</div>";
-// echo "<br> ";
+
 if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 1 )
 {
-// echo "<script type=\"text/javascript\">  $(document).ready(function() { console.log(Date() + \"$given_caption\"); } );</script>";
+echo "<script type=\"text/javascript\">  $(document).ready(function() { console.log(Date() + \"$given_caption exec : $given_exec\"); } );</script>";
 ?>	 
 <script>
 document.getElementById(<?php echo "'" . "$new_id" . "'"; ?>).addEventListener('submit', function (e) {
     e.preventDefault(); // *** CRUCIAL: Prevents the default page refresh/reload ***
     const formData = new FormData(this);
-    const responseContainer = document.getElementById('jav_form_response');
     fetch('incl_metro_functions.php', {
         method: 'POST',
         body: formData
@@ -398,33 +380,22 @@ document.getElementById(<?php echo "'" . "$new_id" . "'"; ?>).addEventListener('
         return response.text(); // Get the response body as text/HTML
     })
 	//
+   .then((responseText) => {
+  document.querySelector("body").innerHTML += responseText
+})
    
-	
-    .then(html => {
-        const newResponseDiv = document.createElement('div');
-        newResponseDiv.innerHTML = html; // Insert the HTML returned from PHP
-       //  newResponseDiv.style.borderTop = '1px solid #ccc';
-        newResponseDiv.style.padding = '20px';
-		newResponseDiv.style.top='1px';
-        newResponseDiv.style.left='1px';      
-		newResponseDiv.style.width='100%';
-		newResponseDiv.style.height='100%';
-        // Append the new content to the body/container without refreshing the page
-       responseContainer.appendChild(newResponseDiv);     
-        // console.log(html);
-        console.log(formData);	
-        // Optional: clear the form input for the next submission
-        e.target.reset();
-    })
     .catch(error => {
-        console.error('Fetch error:', error);
-        responseContainer.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+        console.log('Fetch error:', error);
     });
   });
  </script>
 <?php
+
  }	
+
+
 }
+
 
 
 
@@ -559,52 +530,52 @@ foreach ($GLOBALS["$dup_array"] as $key => $value)
 // end checking params + change the value
 // foreach ($GLOBALS["$dup_array"] as $key => $value){echo "<br> 1 dup_array key :$key => $value";}
 
+
 // check if my_pos param is given and exist
 if (  !isset($GLOBALS["$dup_array"]["my_pos"])){$GLOBALS["$dup_array"]["my_pos"]="none";}
 
 if (  preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 0 )
 {
-if (  !isset($GLOBALS["my_tr"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$GLOBALS["my_tr"]="10";}
-if (  !isset($GLOBALS["my_br"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$GLOBALS["my_br"]="600";}
-if (  !isset($GLOBALS["my_tl"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$GLOBALS["my_tl"]="10";}
-if (  !isset($GLOBALS["my_bl"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$GLOBALS["my_bl"]="600";}
-if (  !isset($GLOBALS["my_mr"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$GLOBALS["my_mr"]="300";}
+if (  !isset($_SESSION["my_tr"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$_SESSION["my_tr"]="10";}
+if (  !isset($_SESSION["my_br"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$_SESSION["my_br"]="600";}
+if (  !isset($_SESSION["my_tl"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$_SESSION["my_tl"]="10";}
+if (  !isset($_SESSION["my_bl"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$_SESSION["my_bl"]="600";}
+if (  !isset($_SESSION["my_mr"]) || preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 ){$_SESSION["my_mr"]="300";}
 
-// if (  preg_match('/^none/',$GLOBALS["$dup_array"]["my_pos"] ) == 1 )
 switch( $GLOBALS["$dup_array"]["my_pos"] )
   {
     case 1 == preg_match('/right|tr/', $GLOBALS["$dup_array"]["my_pos"]):
-	  $GLOBALS["$dup_array"]["top"]=$GLOBALS["my_tr"] . "px";$GLOBALS["my_tr"]=$GLOBALS["my_tr"]+55;
-	  if ( $GLOBALS["my_tr"] >= 600 ){$GLOBALS["my_tr"]="10";}
+	  $GLOBALS["$dup_array"]["top"]=$_SESSION["my_tr"] . "px";$_SESSION["my_tr"]=$_SESSION["my_tr"]+55;
+	  if ( $_SESSION["my_tr"] >= 400 ){$_SESSION["my_tr"]="10";}
 	  $GLOBALS["$dup_array"]["animation"]="slideInRight";
 	  break;
 	  
 	case 1 == preg_match('/mid|mr/', $GLOBALS["$dup_array"]["my_pos"]):
-	  $GLOBALS["$dup_array"]["top"]=$GLOBALS["my_mr"] . "px";$GLOBALS["my_mr"]=$GLOBALS["my_mr"]+55;
-	  if ( $GLOBALS["my_mr"] >= 600 ){$GLOBALS["my_mr"]="300";}
+	  $GLOBALS["$dup_array"]["top"]=$_SESSION["my_mr"] . "px";$_SESSION["my_mr"]=$_SESSION["my_mr"]+55;
+	  if ( $_SESSION["my_mr"] >= 400 ){$_SESSION["my_mr"]="300";}
 	  $GLOBALS["$dup_array"]["animation"]="slideInRight";
 	  break;
 	  
     case 1 == preg_match('/ml/', $GLOBALS["$dup_array"]["my_pos"]):
-	  $GLOBALS["$dup_array"]["top"]=$GLOBALS["my_mr"] . "px";$GLOBALS["my_mr"]=$GLOBALS["my_mr"]+55;
-	  if ( $GLOBALS["my_mr"] >= 600 ){$GLOBALS["my_mr"]="300";}
+	  $GLOBALS["$dup_array"]["top"]=$_SESSION["my_mr"] . "px";$_SESSION["my_mr"]=$_SESSION["my_mr"]+55;
+	  if ( $_SESSION["my_mr"] >= 600 ){$_SESSION["my_mr"]="300";}
 	  $GLOBALS["$dup_array"]["animation"]="slideInLeft";
 	  break;
 	  		
 	case 1 == preg_match('/br/', $GLOBALS["$dup_array"]["my_pos"]):
-	 $GLOBALS["$dup_array"]["top"]=$GLOBALS["my_br"] . "px";$GLOBALS["my_br"]=$GLOBALS["my_br"]-55;
+	 $GLOBALS["$dup_array"]["top"]=$_SESSION["my_br"] . "px";$_SESSION["my_br"]=$_SESSION["my_br"]-55;
 	 $GLOBALS["$dup_array"]["animation"]="slideInRight";
 	  
     case 1 == preg_match('/bl/', $GLOBALS["$dup_array"]["my_pos"]):
-	 $GLOBALS["$dup_array"]["top"]=$GLOBALS["my_bl"] . "px";$GLOBALS["my_bl"]=$GLOBALS["my_bl"]-55;
-	 if ( $GLOBALS["my_bl"] <= 110 ){$GLOBALS["my_tl"]="600";}
+	 $GLOBALS["$dup_array"]["top"]=$_SESSION["my_bl"] . "px";$_SESSION["my_bl"]=$_SESSION["my_bl"]-55;
+	 if ( $_SESSION["my_bl"] <= 110 ){$_SESSION["my_tl"]="600";}
 	 $GLOBALS["$dup_array"]["animation"]="slideInLeft";
 	  break;
 	  
     	
     case 1 == preg_match('/left|tl/', $GLOBALS["$dup_array"]["my_pos"]):
-      $GLOBALS["$dup_array"]["top"]=$GLOBALS["my_tl"] . "px";$GLOBALS["my_tl"]=$GLOBALS["my_tl"]+55;
-	  if ( $GLOBALS["my_tl"] >= 600 ){$GLOBALS["my_tl"]="10";}
+      $GLOBALS["$dup_array"]["top"]=$_SESSION["my_tl"] . "px";$_SESSION["my_tl"]=$_SESSION["my_tl"]+55;
+	  if ( $_SESSION["my_tl"] >= 600 ){$_SESSION["my_tl"]="10";}
 	  $GLOBALS["$dup_array"]["animation"]="slideInLeft";
 	  break;
     
@@ -779,7 +750,6 @@ usleep(100);$time_end=round(microtime(true) * 1000);$new_id="$my_function" . "_"
 $seconds=round($my_delay / 1000, 0, PHP_ROUND_HALF_UP);$seconds=$seconds . "s";
 $animation=$GLOBALS["$my_function"]["animation"];
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
-// foreach ($GLOBALS["$my_function"] as $key => $value){echo "<br> 1 WIG_container key :$key => $value";}
 echo "<div $my_style id=\"$new_id\" >";	
 if ( $my_delay > 1000 ){WIG_progress("timer=$my_delay");}
 if ( preg_match('/^none/',$GLOBALS["$my_function"]["txt"])== 0 ){echo "<br> $my_txt ";}
@@ -787,10 +757,6 @@ WIAG_bs_exec($GLOBALS["$my_function"]);
 //  foreach ($GLOBALS["$my_function"] as $key => $value){echo "<br> 2 WIG_container key :$key => $value";}
 if ( preg_match('/^YES/', $GLOBALS["$my_function"]["close_btn"]) == 1  )
 {WIG_btn("caption=X","cmd=JAV_hide|||$new_id|||none|||5s","top=10px","right=10px","position=absolute","background-color=red !important");}
-//WIG_dt();
-// WIG_clock();
-// WIG_msg("DEBUG=ON","class=bg-blue fg-white","exec=WIG_dt","my_pos=bl","height=300px","delay=5000");
-// WIG_toast("caption=wig_container !!!","delay=3000");
 echo "</div>";
 if ( $my_delay > 1000 ){echo "<script type=\"text/javascript\">JAV_show_hide('$new_id','$animation','$seconds');</script>";}
 if ( $my_delay < 1000 ){echo "<script type=\"text/javascript\">$(document).ready(function() { JAV_show('$new_id','$animation');} );</script>";}	

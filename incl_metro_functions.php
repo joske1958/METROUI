@@ -38,27 +38,30 @@ if (session_status() === PHP_SESSION_NONE)
 
 // first session,global  default values to OFF,ON do not remove START
 //
-foreach (explode(" ","W_style W_logger W_go_up W_translate W_tooltip W_demo") as $i )
+foreach (explode(" ","W_style W_logger W_go_up W_translate W_tooltip W_demo W_class") as $i )
 	{if(!isset($_SESSION["$i"] ) || empty($_SESSION["$i"]) ){$_SESSION["$i"] = "OFF";}}
+
+// set default global colors
+$_SESSION["W_class"]="bg-light-green fg-blue";	
+// put logging on in WIG_logger 
+$_SESSION["W_logger"]="ON";
+
 // now session default values to none 
 foreach (explode(" ","W_toast_txt W_swa_txt W_select_menu W_right_click W_username username role user_include") as $i )
 	{if(!isset($_SESSION["$i"] ) || empty($_SESSION["$i"]) ){$_SESSION["$i"] = "none";}}
 // now the globals default values to integer for pos and timers
-//foreach (explode(" ","W_top W_left W_right W_tl W_tr W_bl W_br W_top container_top") as $i )
-// {if(!isset($GLOBALS["$i"] ) || empty($GLOBALS["$i"]) ){$GLOBALS["$i"] = "10";}}
-// {if(!isset($GLOBALS["$i"] )  ){$GLOBALS["$i"] = "10";}}
-$GLOBALS["W_bl"]="500";$GLOBALS["W_br"]="500";
+
+// $GLOBALS["W_bl"]="500";$GLOBALS["W_br"]="500";
 // now the globals
-foreach (explode(" ","myLocal W_my_id W_my_action W_my_delay W_msg W_modal") as $i )
-{if(!isset($GLOBALS["$i"] ) || empty($GLOBALS["$i"]) ){$GLOBALS["$i"] = "none";}}
+// foreach (explode(" ","myLocal W_my_id W_my_action W_my_delay W_msg W_modal") as $i )
+// {if(!isset($GLOBALS["$i"] ) || empty($GLOBALS["$i"]) ){$GLOBALS["$i"] = "none";}}
 
-// put logging on in WIG_logger 
-$_SESSION["W_logger"]="ON";
 
-foreach ( explode(" ","WIG_msg WIG_modal WIG_navbar WIG_canvas WIG_panel WIG_overlay WIG_label WIG_exec WIG_create_form WIG_container") as $i )
-{if(!isset($GLOBALS["$i"] ) || empty($GLOBALS["$i"]) ){$GLOBALS["$i"] = "none";}}
 
-$myLocal = $GLOBALS["myLocal"];
+// foreach ( explode(" ","WIG_msg WIG_modal WIG_navbar WIG_canvas WIG_panel WIG_overlay WIG_label WIG_exec WIG_create_form WIG_container") as $i )
+// {if(!isset($GLOBALS["$i"] ) || empty($GLOBALS["$i"]) ){$GLOBALS["$i"] = "none";}}
+
+// $myLocal = $GLOBALS["myLocal"];
 
 // if( !isset($_SESSION["DEBUGS"] )){WIG_chk_needed_files();}
  if( !isset($_SESSION["DEBUG"] ) || empty($_SESSION["DEBUG"]) ){$_SESSION["DEBUG"]="OFF";}
@@ -68,7 +71,7 @@ $myLocal = $GLOBALS["myLocal"];
 
 // check needed scripting .css .js .php !! important generate alarm when missing 
 WIG_chk_needed_files();
-
+WIG_tooltip("ON");
 
 // $_SESSION["session_id"]=session_id();
 
@@ -189,7 +192,6 @@ if ( file_exists($my_include ) ){include($my_include);}
 function WIG_chk_needed_files()
 {
 $error=0;$result="\\nERROR\\n";
-// $needed_files="metro_5_1_16.css animate.css metro_5_1_16.js incl_metro_functions.php incl_metro_functions_1.php incl_metro_functions_2.php incl_metro_javascript.php";
 // switched to version 20 on 11/01/2026
 $needed_files="metro_5_1_20.css animate.css metro_5_1_20.js incl_metro_functions.php incl_metro_functions_1.php incl_metro_functions_2.php incl_metro_javascript.php";
 $my_param=func_get_args();if ( count($my_param) >  0 ){$needed_files=implode(" " ,$my_param);	}
@@ -553,25 +555,6 @@ echo "</script>";
 
 
 
-
-
-
-// HELP POST function, options without submit button  ?WIG_submit_post=WIG_msg|||kkkk or WIG_submit_post("WIG_msg","kkkk") be aware of endless loop !!!
-function WIG_submit_post($given_function = "WIG_msg",$given_option ="hello",$given_id="WIG_myForm" )
-{
-if( !isset($given_function) || empty($given_function) ){$given_function="WIG_msg";}
-if( !isset($given_option) || empty($given_option) ){$given_my_option="hello";}
-if( !isset($given_id) || empty($given_id) ){$given_id="WIG_myForm";}
-echo "<div> id=\"$given_id\" >my_form</div>";
-sleep(1);
-?>
-<form id="<?php echo $given_id; ?>" action="<?php $_PHP_SELF ?>" method = "POST">
-<input hidden type = "text" value="<?php echo $given_option ?>" name = "<?php echo $given_function ?>"/>
-</form>
-<script>function myFunction() {document.getElementById("<?php echo $given_id; ?>").submit();}myFunction();</script>	
-<?php
-}
-
 // HELP show global var's with echo 
 function WIG_globals()
 {
@@ -895,7 +878,7 @@ for($record=1;$record<$records_db;$record++)
   }
  }	
 }
-return;
+
 // start check if we made some changes with colorchange 
 $my_name=basename($_SERVER["SCRIPT_FILENAME"]);
 $my_name=substr($my_name,0,strpos($my_name,"."));
@@ -1007,49 +990,48 @@ if( !isset($form_action ) || empty($form_action) ){return;}
 if (function_exists($form_action))
 {
 $new_id="WIG_form" . round(microtime(true) * 1000);usleep(10);
-
 $post_scriptname=basename($_SERVER["SCRIPT_FILENAME"]);
-echo "<br> <form action=$post_scriptname id=$new_id enctype='multipart/form-data' method='post'>";
+echo "<form class='form' action=$post_scriptname id=$new_id enctype='multipart/form-data' method='post'>";
 echo "<button type=submit name=\"$form_action\" class=\"fg-blue bg-red\">Submit</button>";
-// echo "<button type=normal onclick=\"location.reload();return false;\" class=\"fg-green bg-light-blue\">cancel</button>"; 	
 echo "<button type=normal onclick=\"window.location.href();return false;\" class=\"fg-green bg-light-blue\">cancel</button>"; 
+
 }
+// echo "<div class=\"form-group\">";
 foreach(explode(" ",$form_record) as $var)
 {
+echo "<br> var => $var ";
 $my_old_value="empty";
 if( !isset($_SESSION["$var"]) )
  {$_SESSION["$var"]="";$my_old_value=$_SESSION["$var"];}
 else
  $my_old_value=$_SESSION["$var"];
-  echo "<div class=\"form-group\">";
-  echo "<label for=\"usr\">$var</label>";
+ // echo "<div class=\"form-group\">";
+ //  echo "<label for=\"usr\">$var</label>";
 if ( strlen($var) >=2 )
 {
 switch($var)
  {
   case 1 == preg_match('/^passw/', $var):
+   echo "<div class=\"form-group\">";
    echo "<input type=\"password\" class=\"form-control\" name='$var' value='$my_old_value' id=\"$var\">";
    echo "</div>";
   break;
   
   case 1 == preg_match('/color/', $var) &&  preg_match('/^W_/', $var) :
-  echo "<br>";
-  //<script src="jscolor.js"></script>
-  ?>
-   
-   <p>Color: <input   data-jscolor="{closeButton:true,palette:'rgba(0,0,0,0) #fff #808080 #000 #996e36 #f55525 #ffe438 #88dd20 #22e0cd #269aff #bb1cd4'}" name="<?php echo $var; ?>"oninput="document.getElementById(this.name).value = (this.jscolor + ' !important'  + ' ' )">
-   <?php
+   echo "<div class=\"form-group\">";
    echo "<input type=\"text\" class=\"form-control\" name='$var' value='$my_old_value' id=\"$var\">";
    echo "</div>";
   break;
    
   default:
+  echo "<div class=\"form-group\">";
    echo "<input type=\"text\" class=\"form-control\" name='$var' value='$my_old_value' id=\"$var\">";
    echo "</div>";
   break;   
   }
  }
 }
+
 echo "</form>";
 }
 

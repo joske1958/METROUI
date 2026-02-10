@@ -25,6 +25,15 @@ error_reporting(E_ALL);
 
 <script>
 
+
+// HELP  
+function JAV_prevent()
+{
+document.body.addEventListener('submit', function(event) {event.preventDefault();});
+console.log(Date() + '!!! event.preventDefault on body no GET or POST !!!');
+}	
+
+
 // HELP call any script JAV_ or WIG_ directly without refresh 
 function JAV_p(php_function)
 {
@@ -42,7 +51,7 @@ fetch("incl_metro_functions.php", {
   document.querySelector("body").innerHTML += responseText
 })
 .catch((error) => {
-  console.error(error)
+  console.log(error)
 })
 }
 </script>

@@ -1,54 +1,72 @@
 
 <?php
-
-// incl_empty.php used in wbs 
+// incl_test.php used in wbs 
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 include_once("incl_metro_functions.php");
+// WIG_help("my_help=WIG_window");
+WIG_tooltip("ON");
+// echo "<br>:<br>:";
+// WIG_container("my_option=left","class=fg-red bg-blue","visibility=hidden","height=250px","cmd=WIG_menu|%|my_option=v-menu");
+//WIG_msg("my_pos=tr","DEBUG=ON","class=bg-light-red fg-blue");
+//WIG_msg("my_pos=tr","DEBUG=ON","class=bg-light-red fg-blue");
+// WIG_toast("my_pos=tr","delay=5000");
+WIG_btn("caption=wig metro","cmd=WIG_metro|||data-role=container");
+WIG_btn("caption=demo","cmd=WIG_container|||visibility=hidden|%|exec=WIG_demo");
+return;
+WIG_btn("caption=msg","cmd=WIG_msg|||width=100%|||DEBUG=ON|||txt=msg testing|||my_pos=tl|||cmd=WIG_dt|||class=bg-light-green fg-blue","refresh=NO");
+WIG_btn("caption=jav_p msg","cmd=JAV_p|||WIG_msg=DEBUG=ON|||my_pos=tl|||class=bg-green fg-red");
+WIG_btn("caption=jav_p toast","cmd=JAV_p|||WIG_toast=my_pos=tl|||txt=mmmmm");
+echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_toast=my_pos=tl|||txt=mmmm'); } );</script>";
+WIG_btn("caption=toast","cmd=WIG_toast|||my_pos=tr|||delay=5500");
+return;
+WIG_demo();
+echo "<pre>";
+// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_msg','calling WIG_msg|||alert_danger'); } );</script>";
+// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_wizard'); } );</script>";
+//echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p(); } );</script>";
+WIG_btn("caption=jav_p","cmd=JAV_p|||WIG_dt");
+WIG_btn("caption=jav_p wizard","cmd=JAV_p|||WIG_wizard");
+echo" </pre>";
+return;
+// WIG_change_color();
+// WIG_change_color_nm("BLUE");
+WIG_btn("caption=container test 2","cmd=WIG_container|%|exec2=JAV_show|||WIG_clock|%|exec=WIG_demo","refresh=NO");
+WIG_btn("caption=wig_panel","cmd=WIG_container|%|exec=WIG_panel|||cmd=WIG_menu");
+WIG_btn("caption=wizard","cmd=WIG_wizard|||class=bg-black fg-blue");
+WIG_btn("caption=container test","cmd=WIG_container|||visibility=hiddens|%|exec=WIG_demo|||visibility=hiddens|||z-index=0","refresh=NO");
+WIG_btn("caption=container test refresh","cmd=WIG_container|||visibility=hidden|%|exec=WIG_demo|||visibility=hidden|||z-index=0");
+WIG_btn("caption=jav_p dt","cmd=JAV_p|||WIG_window=DEBUG=ON");
+WIG_btn("caption=help","cmd=WIG_container|||visibility=hidden|%|exec2=WIG_clock|%|exec=WIG_help|||my_help=WIG_metro");
+WIG_btn("caption=jav_show_hide","cmd=JAV_show_hide|||WIG_clock|||slideInLeft|||7s");  
+WIG_btn("caption=msg ok","cmd=WIG_msg|||WIG_dt|||class=fg-red bg-blue|||my_pos=tr|||delay=5500|||exec=WIG_clock|||DEBUG=ON|%|exec2=WIG_show_hide|||WIG_clock|%|exec3=JAV_show_hide|||WIG_box");  
+WIG_btn("caption=jav_p","cmd=JAV_p|||WIG_msg=cmd=WIG_dt|||class=fg-red bg-blue|||my_pos=tr|||delay=5000|||exec=WIG_clock|||DEBUG=ON|||exec2=WIG_show_hide|%|WIG_clock");
+WIG_btn("caption=wig_box","cmd=JAV_show_hide|||WIG_box");
+WIG_btn("caption=wig_window","cmd=JAV_show|||WIG_window");
+WIG_btn("caption=wig_box","cmd=WIG_show|||WIG_box");
+WIG_btn("caption=wig_box 2","cmd=WIG_metro|||width=1200px|||height=600px|||delay=2000|||DEBUG=ON|%|cmd=JAV_show_hide|||WIG_box");
+return;
+// WIG_login("my_option=show");
 
-
+// echo"<pre>";WIG_dropdown("caption=test","class=fg-blue bg-red");WIG_dropdown("caption=test","class=fg-blue bg-green");echo "</pre>";
+WIG_btn("caption=show testFlexContainer1","cmd=JAV_show|||testFlexContainer1");
+//WIG_btn("caption= javp toast","cmd=JAV_p=WIG_toastr|||txt=hello2|||delay=4000");
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_container=DEBUG=OFF|||my_option=left|||height=250px|||cmd=WIG_menu'); } );</script>";
 // ?JAV_p=WIG_container|||DEBUG=OFF|||my_option=left|||height=250px|||cmd=WIG_menu|||exec=WIG_fill
-
-
-
-
-
-
+// WIG_btn("caption=modify session w_toast","cmd=WIG_container|%|WIG_change_session_var|||W_toast_txt");
+WIG_btn("caption=container test","cmd=WIG_container|%|exec=WIG_demo","refresh=NO");
+WIG_btn("caption= javp msg","cmd=JAV_p=WIG_msg|||txt=hello|||delay=8000");
+WIG_btn("caption= wig_msg","cmd=WIG_msg|||txt=hello|||delay=10000","refresh=NO");
 WIG_tooltip("ON");
-
 //WIG_msg("DEBUG=ON","class=bg-red fg-white","exec=WIG_dt","my_pos=bl","height=300px","delay=15000");
-// WIG_btn("caption= javp toast","cmd=JAV_p|||WIG_toastr|||txt=hello2|||delay=4000");
+//  WIG_btn("caption= javp msg","cmd=JAV_p=WIG_msg");
 echo "<br>:<br>:";
+WIG_btn("caption=wig_demo","cmd=WIG_container|||cmd=WIG_demo|||visibility=hidden|||z-index=0");
+WIG_btn("caption=howto.pdf","cmd=WIG_iframe|||iframe=howto.pdf");
+WIG_btn("caption=vrtnews","cmd=WIG_iframe|||iframe=https://www.vrt.be/vrtnws/nl/");
 
 
 
-
-
-
-WIG_btn("caption=wig_iframe pdf","cmd=WIG_iframe|||iframe=extbuilder.pdf");
-
-WIG_btn("caption=wig_hh","cmd=WIG_hh");
-function WIG_hh()
-{
-// '{"name":"John", "age":30, "car":null}'
-
-?>
-<div data-role="html-container" data-method="get" data-html-source="?WIG_container=DEBUG=ON">DDD</div>
- <button class="button info" data-role="hint" data-hint-position="bottom" data-hint-text="This is a hinted button">Bottom</button>  
-    <div class="example" data-role="html-container" data-method="post"   data-request-data='{"WIG_container":"DEBUG=ON"}'  data-html-source="incl_metro_functions.php" data-insert-mode="replace">123</div>
-	<?php		
-}
-
-	
-	
-
-// WIG_container();
-// WIG_set_var("username","none");
-// WIG_btn("caption=set user to admin","cmd=WIG_set_var|||username|||admin","exec=WIG_reload");
-// WIG_btn("caption=set user to tester","cmd=WIG_set_var|||username|||tester","exec=WIG_reload");
-// WIG_btn("caption=set user to none","cmd=WIG_set_var|||username|||none","exec=WIG_reload");
-// WIG_btn("caption=demo user","cmd=WIG_demo|||my_option=user");
 
 WIG_btn("caption=demo","cmd=WIG_container|||visibility=hidden|||exec=WIG_demo|||my_option=modify|||delay=400");
 WIG_btn("caption=demo2","cmd=WIG_container|||visibility=hidden|||DEBUG=ON");
@@ -64,9 +82,6 @@ WIG_btn("caption=window no refresh","cmd=WIG_window","refresh=NO");
 WIG_btn("caption=window refresh yes","cmd=WIG_window");
 
 return;
-WIG_btn("caption=test jav_f","cmd=JAV_f");
-
-WIG_btn("caption=test wig dom","cmd=WIG_dom");
 
 
 WIG_btn("caption=test wig toast","cmd=WIG_toast");
@@ -74,57 +89,9 @@ WIG_btn("caption=test jav_a","cmd=JAV_a");
 // WIG_dom();
 
 
-function WIG_dom()
-{
-WIG_dt();	
-?>
-<script>
-// 1. Create the main parent div element
-const mainBox = document.createElement('div');
-mainBox.classList.add('box');
-// 2. Create the first nested div element (box-title)
-const titleDiv = document.createElement('div');
-titleDiv.classList.add('box-title');
-titleDiv.textContent = 'Box Title';
-
-// 3. Create the first p element
-const firstP = document.createElement('p');
-firstP.textContent = 'Content inside the box...';
-
-// 4. Create the second nested div element (box-title-secondary)
-const secondaryTitleDiv = document.createElement('div');
-secondaryTitleDiv.classList.add('box-title-secondary');
-secondaryTitleDiv.textContent = 'Secondary Title';
-
-// 5. Create the second p element
-const secondP = document.createElement('p');
-secondP.textContent = 'More content...';
-
-// 6. Append all child elements to the main parent div in order
-mainBox.appendChild(titleDiv);
-mainBox.appendChild(firstP);
-mainBox.appendChild(secondaryTitleDiv);
-mainBox.appendChild(secondP);
-
-// 7. Append the complete structure to the document body (or another specific element)
-document.body.appendChild(mainBox);
-
-</script>
-	<?php
-	
-	
-	
-}
-
-?>
-
-    <!-- page content -->
-  </body>
-</html>
-<?php
 
 
-return;
+
 
 echo "<br><br>";
 // WIG_btn("caption=test jav_fetch dt","cmd=JAV_fetch|||WIG_dt");
@@ -144,13 +111,13 @@ return;
 //  echo "<button onclick=\"JAV_a('WIG_container=class=info|||cmd=WIG_menu|%|txt_tablename=test_menu.dat|||class=primary|||my_option=sidebar');\">joske</button>";
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { joske(); } );</script>";
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_toastr('testing'); } );</script>";
-//  echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_php('WIG_modal','hello'); } );</script>";
-// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_php('WIG_msg','calling WIG_msg|||alert_danger'); } );</script>";
-// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_php('WIG_toastr','calling WIG_toast'); } );</script>";
-// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_php('WIG_msg','calling WIG_msg'); } );</script>";
+//  echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_modal','hello'); } );</script>";
+// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_msg','calling WIG_msg|||alert_danger'); } );</script>";
+// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_toastr','calling WIG_toast'); } );</script>";
+// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_msg','calling WIG_msg'); } );</script>";
 // echo "<button onclick=\"joske('lllll');\">joske</button>\";</script>";
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_swa('testing'); } );</script>";
-// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_php('WIG_msg','calling WIG_msg|||alert_danger'); } );</script>";
+// echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_p('WIG_msg','calling WIG_msg|||alert_danger'); } );</script>";
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_swa('testingffff',10000); } );</script>";
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_show('WIG_layer_test','slideup',5000); } );</script>";
 // echo "<script type=\"text/javascript\">  $(document).ready(function() { JAV_toastr('testing','success','toast-top-left',1000); } );</script>";
@@ -385,13 +352,11 @@ echo "<br> WIG_test_1";
 // WIG_dropdown();
 // WIG_dropdown("caption=dropdown tester","W_dropdown=wig_fill WIG_fill","W_dropdown_1=carousel WIG_carousel container WIG_container|||DEBUG=OFF|||exec=WIG_fill");
 echo "<br>";
-WIG_btn("caption=notify","cmd=JAV_notify|||hello","color=blue");
-WIG_btn("caption=carousel","cmd=WIG_carousel","color=red");
 
 echo "<br>";
 WIG_btn("caption=dialog","cmd=WIG_dialog|||delay=14000|||exec=WIG_clock");
-WIG_btn("caption=jav dialog","cmd=JAV_p|||WIG_dialog|||delay=4000|||exec=WIG_clock");
-WIG_btn("caption=jav window","cmd=JAV_p|||WIG_window|||delay=4000|||exec=WIG_clock|||exec=WIG_window|||class=fg-red");
+WIG_btn("caption=jav dialog","cmd=JAV_p|||WIG_dialog=delay=4000|||exec=WIG_clock");
+WIG_btn("caption=jav window","cmd=JAV_p|||WIG_window=delay=4000|||exec=WIG_clock|||exec=WIG_window|||class=fg-red");
 WIG_btn("caption=wig window","cmd=WIG_window|||exec=WIG_clock|||color=blue|||exec2=WIG_d");
 WIG_btn("caption=wizard","cmd=WIG_wizard");
 WIG_btn("caption=edit wizard","cmd=WIG_wizard|||my_option=show");
