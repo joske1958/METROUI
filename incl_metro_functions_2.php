@@ -5,7 +5,37 @@ error_reporting(E_ALL);
 
 // functions start here
  
-// HELP create dropdown menu call like this WIG_dropdown("caption=drop_test","w_dropdown=WIG_msg|||txt=hello WIG_container|||txt=lll%%%WIG_toastr|||txt=toast");
+ // HELP create selection box WIG_select("w_select=WIG_hello%%%1%%%two%%%three%%%four")
+ function WIG_select()
+ {
+WIG_reset_global_vars();
+$my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");	
+$GLOBALS["$my_function"]=array_merge($GLOBALS["$my_function"],func_get_args());
+$GLOBALS["$my_function"]["data-role"]="select";$GLOBALS["$my_function"]["w_select"]="WIG_hello%%%1%%%two%%%three%%%four";
+$GLOBALS["$my_function"]["data-clear-Button"]="true";$GLOBALS["$my_function"]["data-filter"]="true";$GLOBALS["$my_function"]["data-filter-placeholder"]="Search : ";
+$GLOBALS["$my_function"]["data-use-placeholder"]="true";
+$GLOBALS["$my_function"]["width"]="90%";$GLOBALS["$my_function"]["height"]="200px";
+$my_style=WIAG_bs($GLOBALS["$my_function"]);
+$caption=$GLOBALS["$my_function"]["caption"];$class=$GLOBALS["$my_function"]["class"];
+usleep(100);$time_end=round(microtime(true) * 1000);$new_id="$my_function" . "_" . "$time_end";
+echo "<select id=\"$new_id\" $my_style >";	
+echo "<br> $my_style";
+// <select data-role="select" data-clearButton="true" data-filter="true" data-filter-placeholder="Search options...">
+foreach ($GLOBALS["$my_function"] as $key => $value)
+   {	   
+	 if ( preg_match('/^w_select/',$key) == 1 )
+	           {   		
+                $my_array=explode("%%%","$value");
+                for($i=0; $i <=substr_count( "$value" ,"%%%"); $i+=1)
+				 {echo "<option class=\"$class\" value=\"$my_array[$i]\">$my_array[$i]</option>";}
+			   }    
+   }
+
+ echo "</select>";
+// echo "</div>";	 
+ }
+ 
+// HELP create dropdown menu call like this WIG_dropdown("caption=drop_test","w_dropdown=WIG_msg|||txt=hello|||exec=WIG_container%%%WIG_toastr|||txt=toast");
 function WIG_dropdown()
  {
 WIG_reset_global_vars();
@@ -16,23 +46,28 @@ $GLOBALS["$my_function"]["style"]="YES";$my_style=WIAG_bs($GLOBALS["$my_function
 $caption=$GLOBALS["$my_function"]["caption"];$class=$GLOBALS["$my_function"]["class"];
 usleep(100);$time_end=round(microtime(true) * 1000);$new_id="$my_function" . "_" . "$time_end";
 echo "<div id=\"$new_id\" $my_style >";	
-echo "<div><button  class=\"button dropdown-toggle $class\" $my_style >$caption</button>";
+echo "<div><button  class=\"button dropdown-toggle $class\"  $my_style >$caption</button>";
 $d_menu_class=str_replace("button","","$class");
  echo "<ul data-role=\"dropdown\" class=\"d-menu $d_menu_class\" >";
   foreach ($GLOBALS["$my_function"] as $key => $value)
    {	   
 	 if ( preg_match('/^w_dropdown/',$key) == 1 )
-	           {  			
+	           {   		
                 $my_array=explode("%%%","$value");
                 for($i=0; $i <=substr_count( "$value" ,"%%%"); $i+=1)
-				 {	
-                  // echo "<li> $i . $my_array[$i] </li>";			 
-				 $my_caption=strtolower($my_array[$i]);$my_caption=str_replace("|||",":",$my_array[$i]);$my_cmd=$my_array[$i];
-				 if( preg_match('(my_option=)',$my_cmd) == 1 ){$my_caption=substr($my_cmd,strpos($my_cmd,"my_option=")+10,strlen($my_cmd));}
-				 echo"<li>";WIG_btn("cmd=$my_cmd","caption=$my_caption","class=$class");echo "</li>";
-
+				 {
+				  $my_caption="dropdown_$i";$my_cmd=$my_array[$i];
+				  $my_capt=explode("|||",$my_cmd);
+				    foreach($my_capt as $key2 => $value2 )
+					{
+					 if( preg_match('(my_caption=)',$value2) == 1 ){$my_caption=preg_replace('/my_caption=/','', $value2);}	
+					 if( preg_match('(my_option=)',$value2) == 1 ){$my_caption=preg_replace('/my_option=/','', $value2);}	
+					}
+					 //echo"<br>cmd=$my_cmd...<br> caption=$my_caption....<br> class=$class"; 
+				     echo"<li>";WIG_btn("cmd=$my_cmd","caption=$my_caption","class=$class");echo "</li>";
+				     $my_cmd="";$my_caption="";
 				  }
-			   }
+			   }    
    }
    echo "</ul>";
   echo "</div>";
@@ -61,7 +96,7 @@ $seconds=round($my_delay / 1000, 0, PHP_ROUND_HALF_UP);$seconds=$seconds . "s";
 $animation=$GLOBALS["$my_function"]["animation"];
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
 echo "<div $my_style id=\"$new_id\" >";	
-if ( $my_delay > 1000 ){WIG_progress("timer=$my_delay");}
+if ( $my_delay > 1000 ){WIG_progress("timer=$my_delay");WIG_progres("timer=$my_delay");}
 echo "$my_txt<br>";
 // foreach ($GLOBALS["$my_function"] as $key => $value){echo "<br> 1 wig_msg key :$key => $value";}
 WIAG_bs_exec($GLOBALS["$my_function"]);
@@ -75,16 +110,6 @@ if ( $my_delay < 1000 ){echo "<script type=\"text/javascript\">$(document).ready
  
  
  
-// HELP  create msg default params are in $GLOBALS["WAR_metro"],type = "info" , delay ="999" , exec=function , txt=kkk
-function WIG_msg_old()
-{
-$my_param=array();$my_param=func_get_args();
-// echo "<pre>";print_r(var_dump($my_param));echo "</pre>";
-call_user_func_array("WIG_metro",$my_param );
-}
- 
- 
-// jos
 // color metro= class : bg-blue fg-red ,alert,info,succes, primary, .secondary, .success, .alert, .warning, .yellow, .info and .light 
 // my_pos metro          :  top,left,bottom, right , tl,tr,bl,br
 // HELP create toast msg with given params , the position is determined by "my_pos" , the color by "class"
@@ -94,8 +119,6 @@ $my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");
 $GLOBALS["$my_function"]=array_merge($GLOBALS["WAR_metro"],func_get_args());
 $GLOBALS["$my_function"]["delay"]="5000";$GLOBALS["$my_function"]["z-index"]="9999";
 $GLOBALS["$my_function"]["width"]="300px";$GLOBALS["$my_function"]["height"]="100px";
-// $GLOBALS["$my_function"]["DEBUG"]="ON";
-// $GLOBALS["$my_function"]["visibility"]="hiddens";
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
 if ( preg_match('/right|tr|br|mid|mr/', $GLOBALS["$my_function"]["my_pos"]) == 1 ){$GLOBALS["$my_function"]["left"]="80%";}
 $my_style=WIAG_bs($GLOBALS["$my_function"]);
@@ -106,17 +129,14 @@ $seconds=round($my_delay / 1000, 0, PHP_ROUND_HALF_UP);$seconds=$seconds . "s";
 echo "<div $my_style id=\"$new_id\" >";	
 if ( $my_delay > 1000 ){WIG_progress("timer=$my_delay");}
 echo "$my_txt <br>";
-//echo "<br> $my_style <br>";
 WIAG_bs_exec($GLOBALS["$my_function"]);
 if ( preg_match('/^YES/', $GLOBALS["$my_function"]["close_btn"]) == 1  )
 {
 $close_animation=str_replace("In","Out","$animation");
 WIG_btn("caption=X","cmd=JAV_hide|||$new_id|||$close_animation|||5s","top=5px","right=5px","position=absolute","background-color=red !important");
 }
-// echo "<script type=\"text/javascript\">JAV_hide('$new_id','$close_animation','10s');</script>";
 echo "</div>";
 if ( $my_delay < 1000 ){echo "<script type=\"text/javascript\">JAV_show('$new_id','$animation');</script>";}	
-// $animation=str_replace("In","Out","$animation");	
 if ( $my_delay > 1000 )
 {echo "<script type=\"text/javascript\">JAV_show_hide('$new_id','$animation','$seconds');</script>";}	
 }
@@ -129,8 +149,7 @@ if ( $my_delay > 1000 )
 // HELP create menu with a text file options are : v-menu , h-menu , d-menu , dropdown ,sidebar
 function WIG_menu()
 {
-$GLOBALS["WAR_menu"]=[ "class"=>"bg-light-green fg-blue","delay" => "999","my_option"=> "none","caption"=>"none",
- "txt" => "none" ,"caption" => "none","border"=> "5px solid blue","border-radius"=> "10px","type"=>"info","font-size" => "20px","mode"=>"horizontal","txt_tablename"=> "test.dat"];
+WIG_reset_global_vars();
 $my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");	
 $GLOBALS["$my_function"]=array_merge($GLOBALS["WAR_menu"],func_get_args());
 $my_style=WIAG_bs($GLOBALS["$my_function"]);$class=$GLOBALS["$my_function"]["class"];$caption=$GLOBALS["$my_function"]["caption"];
@@ -138,7 +157,7 @@ $my_option=$GLOBALS["$my_function"]["my_option"];
 $class=$GLOBALS["$my_function"]["class"];
 $my_style=WIAG_bs($GLOBALS["$my_function"]);	
 // foreach ($GLOBALS["$my_function"] as $key => $value){echo "<br> WIG_menu key :$key => value : $value";}
-$my_delay=$GLOBALS["$my_function"]["delay"];$my_txt=$GLOBALS["$my_function"]["txt"];
+$my_txt=$GLOBALS["$my_function"]["txt"];
 $txt_tablename=$GLOBALS["$my_function"]["txt_tablename"];
 $old_txt_tablename=$txt_tablename;
 $wig_datatable=preg_replace('/.dat|\//','', $txt_tablename);
@@ -173,7 +192,7 @@ WIG_write_txt_db($txt_tablename, $wig_datatable);
 
 $wig_datatable=WIG_get_txt_db("$txt_tablename",$wig_datatable );$records_db=count($wig_datatable[0])-2;
 // echo "<br> option $my_option class  : $class txt_tablename=$txt_tablename old_txt_tablename=$old_txt_tablename";
-// $my_option = type of menu : v-menu , h-menu , d-menu , dropdown ,sidebar
+// $my_option = type of menu : v-menu , h-menu , d-menu , dropdown ,sidebar,w_dropdown
 // $class = color : alert,info,succes, primary, secondary, success, alert, warning, yellow, info ,light or fg-red bg-blue
 switch( $my_option )
   {	 
@@ -257,8 +276,8 @@ switch( $my_option )
 		  
 	case 1 == preg_match('/^dropdown/',$my_option):
 	 // echo "<br> class : $class option : $my_option";
-		echo "<div class=\"dropdown-button $class\"  style=\"width:300px\">";
-		  echo "<button class=\"$class\" $my_option-toggle $class\"  style=\"width:300px\">$my_txt_tablename</button>"; 
+		echo "<div class=\"dropdown-button $class\"  $my_style >";
+		  echo "<button class=\"$class\" $my_option-toggle $class\" $my_style >$my_txt_tablename</button>"; 
 		   echo "<ul class=\"d-menu $class\"  style=\"width:300px\" data-role=\"dropdown\">";		 
           for($record=1;$record<$records_db;$record++) 
            {
@@ -275,22 +294,29 @@ switch( $my_option )
 		  break;
 
       case 1 == preg_match('/^w_dropdown/',$my_option):      
-	   echo "<div><button  class=\"button dropdown-toggle $class\" $my_style >$caption</button>";
+	   echo "<div><button  class=\"button dropdown-toggle $class\" $my_style >$my_txt_tablename</button>";
        $d_menu_class=str_replace("button","","$class");
        echo "<ul data-role=\"dropdown\" class=\"d-menu $d_menu_class\" >";
         foreach ($GLOBALS["$my_function"] as $key => $value)
          {	   
-	      if ( preg_match('/^w_dropdown/',$key) == 1 )
-	           {  
-                // echo "<br>key : $key val : $value";				
-                $my_array=explode(" ","$value");
-                for($i=0; $i <=substr_count( "$value" ," "); $i+=1)
+	      if ( preg_match('/^w_menu/',$key) == 1 )
+	           {  		
+                $my_array=explode("%%%","$value");
+                for($i=0; $i <=substr_count( "$value" ,"%%%"); $i+=1)
 				 {
-			      $my_btn="WIG_btn";$my_caption=strtolower($my_array[$i]);$my_caption=str_replace("|||",":",$my_array[$i]);
-				  $my_cmd=$my_array[$i];echo"<li>";WIG_btn("cmd=$my_cmd","caption=$my_caption","class=$class");echo "</li>";
+				  $my_caption="dropdown_$i";$my_cmd=$my_array[$i];
+				  $my_capt=explode("|||",$my_cmd);
+				    foreach($my_capt as $key2 => $value2 )
+					{
+					 if( preg_match('(my_caption=)',$value2) == 1 ){$my_caption=preg_replace('/my_caption=/','', $value2);}	
+					 if( preg_match('(my_option=)',$value2) == 1 ){$my_caption=preg_replace('/my_option=/','', $value2);}	
+					}
+					 //echo"<br>cmd=$my_cmd...<br> caption=$my_caption....<br> class=$class"; 
+				     echo"<li>";WIG_btn("cmd=$my_cmd","caption=$my_caption","class=$class");echo "</li>";
+				     $my_cmd="";$my_caption="";
 				  }
-			   }
-         }
+			   }        	 
+		 }
 		 echo "</ul>";
          echo "</div>";
 		 break;
@@ -312,7 +338,6 @@ switch( $my_option )
  }
 
 
-
 // HELP create button using GLOBAL variables + cmd line
 function WIG_btn()
 {
@@ -326,7 +351,7 @@ $given_cmd=$GLOBALS["$my_function"]["cmd"];$given_caption=$GLOBALS["$my_function
 $given_exec=$GLOBALS["$my_function"]["cmd"];$class=$GLOBALS["$my_function"]["class"];
 $new_id="$my_function" . round(microtime(true) * 1000);usleep(10);
 // check if we are executing javanscript so it is a direct call no form needed
-if ( preg_match('/^JAV_/',$given_exec) == 1  )
+if ( preg_match('/^JAV_/',$given_exec) == 1 )
 	     {  	 
 		  $my_args="";$my_click="";$button_txt="";$num_args=explode("|||",$given_exec);
 		  $my_args=$num_args[0] . "('" ;unset($num_args[0]);
@@ -344,31 +369,42 @@ if ( preg_match('/^JAV_/',$given_exec) == 1  )
              $my_click="$my_args)";$button_txt="$my_click";
 		    }
 			// JAV_p is called it is JAV_p('.............') => arguments are not changed 
-            if ( preg_match('/^JAV_p/',$given_exec ) == 1 && strlen($given_exec) > 5 )
+            if ( preg_match('/^JAV_p/',$given_exec ) == 1 && strlen($given_exec) > 5  )
 			 {
               $my_args="";$my_click="";$my_args="JAV_p('" ;$given_exec=str_replace("JAV_p|||","","$given_exec");
 			  $my_click=$my_args . $given_exec . "');";
 			 }				 
 	     // echo "<br>MY STYLE  : $my_style <br>";
-          echo "<div><button type=\"button\" id=\"$new_id\" data-tooltip=\"$my_click\" class=\"btn-danger bg-red\" $my_style onclick=\"$my_click;return false;\">$given_caption</button></div><br>";return;
-		   
+         echo "<div><button type=\"button\" id=\"$new_id\" data-tooltip=\"$my_click\" class=\"btn-danger bg-red\" $my_style onclick=\"$my_click;return false;\">$given_caption</button></div><br>";return;  
 		 }
 
+// disabled on 26/02/2026
+if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 11 )
+{
+$my_args="";$my_click="";$my_args="JAV_p('" ;$given_exec=str_replace("JAV_p|||","","$given_exec");
+			  $my_click=$my_args . $given_exec . "');";	
+echo "<div><button type=\"button\" id=\"$new_id\" data-tooltip=\"$my_click\" class=\"btn-danger bg-red\" $my_style onclick=\"$my_click;return false;\">NNN:$given_caption</button></div><br>";  			  
+}
+
 // create FORM based on refresh value action=\"incl_metro_functions.php\" 
-if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 1 ){echo "<div><form id=\"$new_id\" method=\"POST\" >";$class="fg-red bg-blue";} 
+if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 1 ){echo "<div><form id=\"$new_id\" method=\"POST\" >";$class="fg-red bg-blue";$given_caption="N:$given_caption";} 
 if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 0 ){echo "<div><form id=\"$new_id\" method=\"POST\" >";} 
 foreach ($GLOBALS["$my_function"] as $key => $value){echo "<input hidden type = \"text\" value=\"$value\" name = \"$key\"/>";					}			
 echo "<br><div><button type=\"submit\"  class=\"$class\"  data-tooltip=\"$given_exec\" $my_style >$given_caption</button></div>";
-echo "</div></form>";
+// echo "</div></form>";
 
+// disabled on 26/02/2026
 if ( preg_match('/^NO/',$GLOBALS["$my_function"]["refresh"]) == 1 )
 {
 echo "<script type=\"text/javascript\">  $(document).ready(function() { console.log(Date() + \"$given_caption exec : $given_exec\"); } );</script>";
-?>	 
+?>	
+ 
 <script>
+// JAV_prevent();
 document.getElementById(<?php echo "'" . "$new_id" . "'"; ?>).addEventListener('submit', function (e) {
     e.preventDefault(); // *** CRUCIAL: Prevents the default page refresh/reload ***
     const formData = new FormData(this);
+	console.log(formData);
     fetch('incl_metro_functions.php', {
         method: 'POST',
         body: formData
@@ -393,7 +429,7 @@ document.getElementById(<?php echo "'" . "$new_id" . "'"; ?>).addEventListener('
 
  }	
 
-
+echo "</div></form>";
 }
 
 
@@ -406,7 +442,7 @@ function WIAG_bs_exec(&$my_array,$my_style="none")
 // foreach ($my_array as $key => $value){echo "<br> WIAGS_bs_exec key :$key => $value";}
  //echo "<br>WIAG_BS exec <pre>";print_r(debug_backtrace());echo "</pre>";
 //WIG_toastr("$my_result  END ", "info" , "toast-bottom-full-width" , "-1");
-
+	
 foreach ($my_array as $key => $value)
  {
   
@@ -471,11 +507,7 @@ foreach ($my_array as $key => $value)
 	$my_function=$my_param[0];unset($my_param[0]);call_user_func_array("$my_function",$my_param );
 		
 	} 
-   }
-  
- 
- 
- 
+   } 
 // echo "<br> WIAGS_bs_exec key :$key => $value";
  }
 }
@@ -544,12 +576,30 @@ if (  !isset($_SESSION["my_mr"]) || preg_match('/^none/',$GLOBALS["$dup_array"][
 
 switch( $GLOBALS["$dup_array"]["my_pos"] )
   {
-    case 1 == preg_match('/right|tr/', $GLOBALS["$dup_array"]["my_pos"]):
+   // for canvas start => top,left,bottom,right
+   case 1 == preg_match('/top/',$GLOBALS["$dup_array"]["my_pos"]):
+	 $GLOBALS["$dup_array"]["width"]="100%";$GLOBALS["$dup_array"]["height"]="30%";
+	 $GLOBALS["$dup_array"]["top"]="1px";$GLOBALS["$dup_array"]["left"]="1px";
+	 break;
+	case 1 == preg_match('/bottom/',$GLOBALS["$dup_array"]["my_pos"]):
+	 $GLOBALS["$dup_array"]["width"]="100%";$GLOBALS["$dup_array"]["height"]="30%";
+	 $GLOBALS["$dup_array"]["top"]="70%";$GLOBALS["$dup_array"]["left"]="1px";
+	 $GLOBALS["$dup_array"]["animations"]="slideInUp";$animation=$GLOBALS["$dup_array"]["animations"];
+	 break;
+	case 1 == preg_match('/left/',$GLOBALS["$dup_array"]["my_pos"]):
+	 $GLOBALS["$dup_array"]["width"]="30%";$GLOBALS["$dup_array"]["height"]="100%";
+	 $GLOBALS["$dup_array"]["top"]="1px";$GLOBALS["$dup_array"]["left"]="1px";
+	 break;
+	case 1 == preg_match('/right/',$GLOBALS["$dup_array"]["my_pos"]):
+	 $GLOBALS["$dup_array"]["width"]="30%";$GLOBALS["$dup_array"]["height"]="100%";
+	 $GLOBALS["$dup_array"]["top"]="1%";$GLOBALS["$dup_array"]["left"]="70%";
+	 $GLOBALS["$dup_array"]["animations"]="slideInRight";$animation=$GLOBALS["$dup_array"]["animations"];
+    // for canvas end => top,left,bottom,right		  
+    case 1 == preg_match('/tr/', $GLOBALS["$dup_array"]["my_pos"]):
 	  $GLOBALS["$dup_array"]["top"]=$_SESSION["my_tr"] . "px";$_SESSION["my_tr"]=$_SESSION["my_tr"]+55;
 	  if ( $_SESSION["my_tr"] >= 400 ){$_SESSION["my_tr"]="10";}
 	  $GLOBALS["$dup_array"]["animation"]="slideInRight";
-	  break;
-	  
+	  break;	  
 	case 1 == preg_match('/mid|mr/', $GLOBALS["$dup_array"]["my_pos"]):
 	  $GLOBALS["$dup_array"]["top"]=$_SESSION["my_mr"] . "px";$_SESSION["my_mr"]=$_SESSION["my_mr"]+55;
 	  if ( $_SESSION["my_mr"] >= 400 ){$_SESSION["my_mr"]="300";}
@@ -571,9 +621,8 @@ switch( $GLOBALS["$dup_array"]["my_pos"] )
 	 if ( $_SESSION["my_bl"] <= 110 ){$_SESSION["my_tl"]="600";}
 	 $GLOBALS["$dup_array"]["animation"]="slideInLeft";
 	  break;
-	  
-    	
-    case 1 == preg_match('/left|tl/', $GLOBALS["$dup_array"]["my_pos"]):
+	    	
+    case 1 == preg_match('/tl/', $GLOBALS["$dup_array"]["my_pos"]):
       $GLOBALS["$dup_array"]["top"]=$_SESSION["my_tl"] . "px";$_SESSION["my_tl"]=$_SESSION["my_tl"]+55;
 	  if ( $_SESSION["my_tl"] >= 600 ){$_SESSION["my_tl"]="10";}
 	  $GLOBALS["$dup_array"]["animation"]="slideInLeft";
@@ -737,7 +786,6 @@ $records_db=count($wig_datatable[0])-2;
 }
 
 
-// jos
 // HELP create container default params are in $GLOBALS["WAR_container"] or given in url  ?WIG_container=txt=WIG_debug|%|width=75%|%|delay=5000
 function WIG_container()
 {
@@ -790,54 +838,6 @@ if(preg_match('/^ON/',$given_option) == 1 ){$_SESSION["W_dropdown_hover"]="ON";W
  }	
 }
 
-
-// HELP simulate offcanvas params: 1: "my_option=left" , right ,top,bottom
-function WIG_canvas()
-{	
-WIG_reset_global_vars();
-$my_function=__FUNCTION__;$my_function=str_replace("WIG","WAR","$my_function");
-$GLOBALS["$my_function"]=array_merge($GLOBALS["WAR_metro"],func_get_args());
-$my_style=WIAG_bs($GLOBALS["$my_function"]);
-$my_delay=$GLOBALS["$my_function"]["delay"];$my_txt=$GLOBALS["$my_function"]["txt"];
-$animation=$GLOBALS["$my_function"]["animation"];
-usleep(100);$time_end=round(microtime(true) * 1000);$new_id="$my_function" . "_" . "$time_end";
-$seconds=round($my_delay / 1000, 0, PHP_ROUND_HALF_UP);$seconds=$seconds . "s";
- if (  preg_match('/top|bottom|left|right/', $GLOBALS["$my_function"]["my_option"]) == 0  ){$GLOBALS["$my_function"]["my_option"]="top";}
- 
-switch( $GLOBALS["$my_function"]["my_option"] )
-{
-	case 1 == preg_match('/top/',$GLOBALS["$my_function"]["my_option"]):
-	 $GLOBALS["$my_function"]["width"]="100%";$GLOBALS["$my_function"]["height"]="30%";
-	 $GLOBALS["$my_function"]["top"]="1px";$GLOBALS["$my_function"]["left"]="1px";
-	 break;
-	case 1 == preg_match('/bottom/',$GLOBALS["$my_function"]["my_option"]):
-	 $GLOBALS["$my_function"]["width"]="100%";$GLOBALS["$my_function"]["height"]="30%";
-	 $GLOBALS["$my_function"]["top"]="70%";$GLOBALS["$my_function"]["left"]="1px";
-	 $GLOBALS["$my_function"]["animations"]="slideInUp";$animation=$GLOBALS["$my_function"]["animations"];
-	 break;
-	case 1 == preg_match('/left/',$GLOBALS["$my_function"]["my_option"]):
-	 $GLOBALS["$my_function"]["width"]="30%";$GLOBALS["$my_function"]["height"]="100%";
-	 $GLOBALS["$my_function"]["top"]="1px";$GLOBALS["$my_function"]["left"]="1px";
-	 break;
-	case 1 == preg_match('/right/',$GLOBALS["$my_function"]["my_option"]):
-	 $GLOBALS["$my_function"]["width"]="30%";$GLOBALS["$my_function"]["height"]="100%";
-	 $GLOBALS["$my_function"]["top"]="1%";$GLOBALS["$my_function"]["left"]="70%";
-	 $GLOBALS["$my_function"]["animations"]="slideInRight";$animation=$GLOBALS["$my_function"]["animations"];
-	default :
-     break;
-}
-$my_style=WIAG_bs($GLOBALS["$my_function"]);
-echo "<div $my_style id=\"$new_id\" >";	
-if ( $my_delay > 1000 ){WIG_progress("timer=$my_delay");}
-if ( preg_match('/^YES/', $GLOBALS["$my_function"]["close_btn"]) == 1  )
-{WIG_btn("caption=X","cmd=JAV_hide|||$new_id|||none|||5s","top=10px","right=10px","position=absolute","background-color=red !important");}
-WIAG_bs_exec($GLOBALS["$my_function"]);
-// foreach ($GLOBALS["$my_function"] as $key => $value){echo "<br> canvas key :$key => $value";}
-echo "</div>";
-if ( $my_delay > 1000 ){echo "<script type=\"text/javascript\">JAV_show_hide('$new_id','none','$seconds');</script>";}
-if ( $my_delay < 1000 ){echo "<script type=\"text/javascript\">JAV_show('$new_id','$animation');</script>";}	
-//WIG_clean_url();
-}
 
  
 

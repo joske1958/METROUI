@@ -26,7 +26,9 @@ error_reporting(E_ALL);
 <script>
 
 
-// HELP  
+
+
+// HELP stop refresh  
 function JAV_prevent()
 {
 document.body.addEventListener('submit', function(event) {event.preventDefault();});
@@ -34,11 +36,12 @@ console.log(Date() + '!!! event.preventDefault on body no GET or POST !!!');
 }	
 
 
+
 // HELP call any script JAV_ or WIG_ directly without refresh 
 function JAV_p(php_function)
 {
 if ( php_function === undefined  ){ php_function="WIG_msg=cmd=WIG_dt|||class=fg-red bg-blue|||my_pos=tr|||delay=5000|||exec=WIG_clock|||DEBUG=ON|||exec2=WIG_show_hide|%|WIG_clock"; }
-console.log(php_function);
+console.log(Date() + 'JAV_p : ' + php_function);
 fetch("incl_metro_functions.php", {
   method: "POST",
   headers: {
@@ -54,6 +57,30 @@ fetch("incl_metro_functions.php", {
   console.log(error)
 })
 }
+
+// HELP call any script JAV_ or WIG_ directly without refresh 
+function JAV_p_old(php_function)
+{
+if ( php_function === undefined  ){ php_function="WIG_msg=cmd=WIG_dt|||class=fg-red bg-blue|||my_pos=tr|||delay=5000|||exec=WIG_clock|||DEBUG=ON|||exec2=WIG_show_hide|%|WIG_clock"; }
+console.log(Date() + 'JAV_p : ' + php_function);
+fetch("incl_metro_functions.php", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+  },
+  body: php_function
+})
+.then((response) => response.text())
+.then((responseText) => {
+  document.querySelector("body").innerHTML += responseText
+})
+.catch((error) => {
+  console.log(error)
+})
+}
+
+
+
 </script>
 
 
@@ -74,6 +101,7 @@ fetch("incl_metro_functions.php", {
 	if ( my_color === undefined  ){ my_color="primary"; }
 	if ( my_delay === undefined  ){ my_delay=15000; }
 	if ( my_width === undefined  ){ my_width=250; }
+	 console.log(Date() + 'JAV_notify ');
 	// alert,info,succes, primary, .secondary, .success, .alert, .warning, .yellow, .info and .light
      Metro.notify.create(my_text, ""  , {timeout:my_delay,width:my_width,clsNotify:my_color});	
 	}
@@ -146,6 +174,8 @@ function JAV_clock(){
       }
 
     };
+	// console.log( Date() + 'tooltip is called');
+	// JAV_notify();
 }
 // <script>JAV_toastr()
 </script>
@@ -246,6 +276,7 @@ if ( my_delay === undefined  ){ my_delay='5s'; }
   }
 my_hide_int=parseInt(my_delay, 10);
 my_hide_int=my_hide_int * 900;
+console.log( Date() + 'jav_hide is called' + my_id + "..." + my_action + "...." + my_delay ); 
 // alert(my_id + " :::" + my_action + " :::" +  my_delay );
 const element = document.getElementById(my_id);
 element.style.setProperty('animation-duration', my_delay);
